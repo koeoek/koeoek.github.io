@@ -26,8 +26,8 @@ var enemyV = 70;
 
         game.load.image('pill', 'assets/pill.png');
 
-        game.load.audio('soundtrack', 'assets/soundtrack.mp3');
-        game.load.audio('steps', 'assets/steps.mp3');
+        game.load.audio('soundtrack', 'assets/soundtrack.wav');
+        game.load.audio('steps', 'assets/steps.wav');
 
     }
 
@@ -46,6 +46,7 @@ var enemyV = 70;
         game.physics.startSystem(Phaser.Physics.ARCADE);
         /////////////////////////////////////
         cursors = game.input.keyboard.createCursorKeys();
+        space = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
         map = game.add.tilemap('tilemap');
         map.addTilesetImage('main_tiles', 'main_tiles');
         map.addTilesetImage('decoration', 'decoration');
@@ -149,7 +150,7 @@ var enemyV = 70;
             player.animations.stop();
             player.frame = 4;
         }
-        if (cursors.up.isDown  && player.body.blocked.down)
+        if (space.isDown  && player.body.blocked.down)
         {
             player.body.velocity.y = -400;
         }
@@ -209,7 +210,9 @@ var enemyV = 70;
         if (soundtrack.isDecoding)
         {
             game.debug.text("Decoding Backgroundsound ...", 32, 200);
+            
         }
+        
 
         if (steps.isDecoding)
         {
