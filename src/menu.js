@@ -9,15 +9,15 @@ menu.prototype = {
 
 
  		this.game.add.image(0, 0, 'logo');
-  		play = this.game.add.button(412, 300, "play", this.playTheGame, this);
-  		this.game.add.button(412, 400, "instructions", this.showInstructions, this);
+  		play = this.game.add.button(420, 275, "buttonimg", this.playTheGame, this);
+  		this.game.add.button(420, 350, "buttonimg", this.showInstructions, this);
 
   		//if (play.downFrame) {
   		//	this.game.sound.play('wasted');
   		//}	
 	},
 	playTheGame: function(){
-		this.game.state.start("TheGame");
+		this.game.state.start("Level1");
 	},
 	showInstructions: function(){
 		this.game.state.start("Instructions");

@@ -6,8 +6,10 @@
 	<script src="src/preload.js"></script>
 	<script src="src/menu.js"></script>
 	<script src="src/instructions.js"></script>
-	<script src="src/theGame.js"></script>
-	<script src="src/gameover.js"></script>	
+	<script src="src/level1.js"></script>
+	<script src="src/level2.js"></script>
+	<script src="src/gameover_fall.js"></script>	
+	<script src="src/gameover_time.js"></script>	
 	<style>
 		body{margin:0}
 	</style>
@@ -17,10 +19,12 @@
 			game.state.add("Preload",preload);
 			game.state.add("Menu",menu);
 			game.state.add("Instructions",instructions);
-			game.state.add("TheGame",theGame);
-			game.state.add("GameOver",gameOver);
+			game.state.add("Level1",level1);
+			game.state.add("Level2",level2);
+			game.state.add("GameOver_fall",gameOverFall);
+			game.state.add("GameOver_time",gameOverTime);
 			game.state.start("Preload");
-		})();    
+		})();   
 	</script>
 </head>
 <body>
