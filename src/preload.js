@@ -5,11 +5,13 @@ preload.prototype = {
         //Tilemap and Tileset preloading
         this.game.load.tilemap('tilemap_world1', 'assets/images/sd_world1.json', null, Phaser.Tilemap.TILED_JSON);
         this.game.load.tilemap('tilemap_world2', 'assets/images/sd_world2.json', null, Phaser.Tilemap.TILED_JSON);
+        this.game.load.tilemap('tilemap_world3', 'assets/images/sd_world3.json', null, Phaser.Tilemap.TILED_JSON);
+        this.game.load.tilemap('tilemap_world4', 'assets/images/sd_world4.json', null, Phaser.Tilemap.TILED_JSON);
         this.game.load.image('main_tiles', 'assets/images/main_tileset.png');
         this.game.load.image('decoration', 'assets/images/decoration.png');
 
         //Player and Enemys (Characters) preloading
-        this.game.load.spritesheet('dude', 'assets/images/dude.png', 32, 48);
+        this.game.load.spritesheet('dude', 'assets/images/player.png', 32, 48);
         this.game.load.spritesheet('enemy1', 'assets/images/enemy1.png', 32, 48);
         this.game.load.spritesheet('enemy2', 'assets/images/enemy2.png', 32, 48);
 

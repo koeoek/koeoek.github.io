@@ -220,8 +220,8 @@ level1.prototype = {
         player.body.bounce.y = 0;
         player.body.gravity.y = 1500;
         player.body.collideWorldBounds = false;
-        player.animations.add('left', [0, 1, 2, 3], 10, true);
-        player.animations.add('right', [5, 6, 7, 8], 10, true);
+        player.animations.add('left', [0, 1, 2, 3, 4, 5, 6, 7], 20, true);
+        player.animations.add('right', [8, 9, 10, 11, 12, 13, 14, 15], 20, true);
         this.game.camera.follow(player);
         player.outOfBoundsKill = true;
 
@@ -229,8 +229,8 @@ level1.prototype = {
         this.enemy1.body.bounce.y = 0.3;
         this.enemy1.body.gravity.y = 800;
         this.enemy1.body.collideWorldBounds = false;
-        this.enemy1.animations.add('left', [0, 1, 2, 3], 10, true);
-        this.enemy1.animations.add('right', [5, 6, 7, 8], 10, true);
+        this.enemy1.animations.add('left', [0, 1, 2, 3], 15, true);
+        this.enemy1.animations.add('right', [5, 6, 7, 8], 15, true);
         this.enemy1.outOfBoundsKill = true;
 
         //Physicsattributes for enemy2
@@ -409,7 +409,7 @@ level1.prototype = {
         this.timeToLive = 15000;
 
 
-        fearTween = this.game.add.tween(fearBar).to({width:0}, this.timeToLive, Phaser.Easing.Linear.None, true);
+        fearTween = this.game.add.tween(fearBar).to({width:0}, this.timeToLive, Phaser.Easing.Linear.None, false);
         fearAlphaTween = this.game.add.tween(fearBar).to( { alpha: 0 }, 500, Phaser.Easing.Linear.None, false, 0, 1000, true);
 
     },
@@ -496,7 +496,7 @@ level1.prototype = {
                 player.animations.play('right');
             } else {
                 player.animations.stop();
-                player.frame = 4;
+                player.frame = 8;
             }
             if (space.isDown && player.body.blocked.down){ //
                 player.body.velocity.y = -600;
@@ -787,6 +787,8 @@ level1.prototype = {
         if(fearBar.width < 75) {
             fearAlphaTween.start();
         }
+
+        fearTween.start();
     },
 
     collectPill: function(player, pill) {
