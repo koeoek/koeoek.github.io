@@ -1,4 +1,4 @@
-var level2 = function(game){
+var level3 = function(game){
     var intLevelNumber = 1;
     var StringLevelNumber = intLevelNumber.toString();
     var text = 'tilemap_world';
@@ -50,7 +50,7 @@ var level2 = function(game){
     var animationFix = true;
 }
 
-level2.prototype = {
+level3.prototype = {
     create: function() {
 
         //Background
@@ -85,7 +85,7 @@ level2.prototype = {
         ////////////////////////////////
         //esc.onDown.add(this.pause, this);
         //esc.onDown.add(this.unpause, this);
-        map = this.game.add.tilemap('tilemap_world2');
+        map = this.game.add.tilemap('tilemap_world3');
         map.addTilesetImage('main_tiles', 'main_tiles');
         map.addTilesetImage('decoration', 'decoration');
 
@@ -854,7 +854,7 @@ level2.prototype = {
     },
 
     nextStage: function(player, stars) {
-        this.game.state.start('Level3');
+        this.game.state.start('Level4');
     },
 
     render: function() {

@@ -406,7 +406,7 @@ level1.prototype = {
         fearBar.fixedToCamera = true;
         fearBar.aplha = 1;
         fearBar.width = 190;
-        this.timeToLive = 15000;
+        this.timeToLive = 300000;
 
 
         fearTween = this.game.add.tween(fearBar).to({width:0}, this.timeToLive, Phaser.Easing.Linear.None, false);
