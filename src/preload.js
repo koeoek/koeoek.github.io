@@ -10,8 +10,8 @@ preload.prototype = {
 
         //Player and Enemys (Characters) preloading
         this.game.load.spritesheet('dude', 'assets/images/dude.png', 32, 48);
-        this.game.load.spritesheet('enemy1', 'assets/images/enemy1.png', 32, 48);
-        this.game.load.spritesheet('enemy2', 'assets/images/enemy2.png', 32, 48);
+        this.game.load.spritesheet('enemy1', 'assets/images/enemy1.png', 32, 48); //Mänchen
+        this.game.load.spritesheet('enemy2', 'assets/images/enemy2.png', 64, 64); //Fledermaus
 
         //Background preloadig
         this.game.load.image('background', 'assets/images/background.jpg');
