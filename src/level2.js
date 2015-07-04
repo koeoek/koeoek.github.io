@@ -1,11 +1,5 @@
 var level2 = function(game){
-    var intLevelNumber = 1;
-    var StringLevelNumber = intLevelNumber.toString();
-    var text = 'tilemap_world';
-    var mapName = text + StringLevelNumber;
 
-    var intEnemys = 18;
-    var stringEnemys = intEnemys.toString();
 
     //Items
     var pills;
@@ -15,8 +9,7 @@ var level2 = function(game){
     var blurX;
     var blurY;
 
-    //Einstellungen
-    var timeToLive; //Zeit für Level
+    //Fearbar
     var tweenUpdate; //Übergangsparamenter, wenn Dingens getouched wird
 
     //Text
@@ -42,37 +35,56 @@ var level2 = function(game){
     var esc;
     var space;
 
+    //Pause
+    isPaused = false;
+
     //LevelEnd
     var star;
     var stars;
 
     //Animation bugfix
-    var animationFix = true;
+    animationFix = true;
 }
 
 level2.prototype = {
+
     create: function() {
 
-        //Background
-        var bg = this.game.add.image(0, 0, 'background');
-        bg.fixedToCamera = true;
-        bg.scrollFactorX = 4;
+        //LEVELSETTINGS
+        var intLevelNumber = 2;
+        var intEnemys = 18;
+        var timeToLive = 50000;
+        nextLevel = 'Level3';
 
-        //Soundtrack
+        //DO NOT CHANGE!
+        var StringLevelNumber = intLevelNumber.toString();
+        var text = 'tilemap_world';
+        var mapName = text + StringLevelNumber;
+        var stringEnemys = intEnemys.toString();
+        var levelName = 'Level' + StringLevelNumber;
+        //var intNextLevel = intLevelNumber+1;
+        //var StringNextLevel = intNextLevel.toString();
+        //var StringNextLevelName = 'Level' + StringNextLevel;
+        currentLevel = intLevelNumber;
+
+        //Initialize
+        isPaused = false;
+
+        //Background
+        bg = this.game.add.image(0, 100, 'background2');
+        bg.scrollFactorX = 10;
+
+        //Music
         soundtrack = this.game.sound.play('soundtrack');
-        //steps = this.game.sound.play('steps');
-        soundtrack.mute;
+        //soundtrack.mute;
 
         //Add text
-        textGoodLuck = this.game.add.text(16, 84+370, 'Good luck', { fontSize: '32px', fill: '#FFF' });
-        textWasted = this.game.add.text(250, 288, 'WASTED', { fontSize: '100px', fill: '#FF0000' });
-        textWaiting = this.game.add.text(50, 288, 'GAME IS LOADING', { fontSize: '100px', fill: '#FF0000' });
-        textFear = this.game.add.text(16, 16, 'Time till fear', { fontSize: '32px', fill: '#FFF' });
+        goodluck = this.game.add.image(16, 100+370, 'good_luck');
+        feartimer = this.game.add.image(16,6, 'feartimer');
 
-        //Fix text to camera
-        textWasted.fixedToCamera = true;
-        textFear.fixedToCamera = true;
-        textWaiting.fixedToCamera = true;
+        //Fix to camera
+        feartimer.fixedToCamera = true;
+
 
         //Initialize physics
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -82,10 +94,9 @@ level2.prototype = {
         esc = this.input.keyboard.addKey(Phaser.Keyboard.ESC);
         space = this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 
-        ////////////////////////////////
-        //esc.onDown.add(this.pause, this);
-        //esc.onDown.add(this.unpause, this);
-        map = this.game.add.tilemap('tilemap_world2');
+        //Tilesets and Mapping
+        console.log(mapName);
+        map = this.game.add.tilemap(mapName);
         map.addTilesetImage('main_tiles', 'main_tiles');
         map.addTilesetImage('decoration', 'decoration');
 
@@ -98,15 +109,8 @@ level2.prototype = {
         layer8.resizeWorld();
         layer8.wrap = true;
         layer8.alpha = 0;
-        //layer.scrollFactorX = 1.2;
 
-        //layer6 = map.createLayer('collisionEnemys');
-        //layer6.resizeWorld();
-        //layer6.wrap = true;
-        //layer6.alpha = 0;
-        //layer.scrollFactorX = 1.2;
-
-        //Blääätter
+            //Particles
             var emitter = this.game.add.emitter(this.game.world.centerX, 0, 576);
             emitter.width = this.game.world.width;
             emitter.makeParticles('leaf');
@@ -115,13 +119,8 @@ level2.prototype = {
             emitter.minParticleScale = 0.1;
             emitter.maxParticleScale = 0.3;
             emitter.gravity = 1;
-             //  This will emit a quantity of 5 particles every 500ms. Each particle will live for 2000ms.
-            //  The -1 means "run forever"
             emitter.flow(5000, 500, 5, -1);
-            //  This will emit a single particle every 100ms. Each particle will live for 2000ms.
-            //  The 100 means it will emit 100 particles in total and then stop.
             emitter.flow(5000, 100, 1, -1);
-        //Ende Blääätter
 
         layer2 = map.createLayer('ground');
         layer2.resizeWorld();
@@ -168,8 +167,8 @@ level2.prototype = {
         //Set Colissions
         map.setCollision(1);
         map.setCollision(155);
-        ////////////////////////////////////
 
+        //Create Player and Enemys
         player = this.game.add.sprite(320000, this.game.world.height - 1500, 'dude');
         this.enemy1 = this.game.add.sprite(40000, 70000, 'enemy1'); //Das Anfangsmännchen
         this.enemy2 = this.game.add.sprite(120000, 68000, 'enemy2'); //Fledermaus
@@ -191,10 +190,12 @@ level2.prototype = {
         this.enemy17 = this.game.add.sprite(4587, 880, 'enemy1'); //Das Anfangsmännchen
         this.enemy18 = this.game.add.sprite(5987, 880, 'enemy1'); //Das Anfangsmännchen
 
+        //Player- and enemy-Air-fix
         player.reset(50, this.game.world.height - 100);//Reset, weil sie direkz zu sehen sind
         this.enemy1.reset(400,700);
         this.enemy2.reset(930, 650);
 
+        //Set Arcade to player and enemys
         this.game.physics.arcade.enable(player);
         this.game.physics.arcade.enable(this.enemy1);
         this.game.physics.arcade.enable(this.enemy2);
@@ -369,395 +370,412 @@ level2.prototype = {
         this.enemy18.animations.add('right', [5, 6, 7, 8], 10, true);
         this.enemy18.outOfBoundsKill = true;
 
+        //Blurfilter
         blurX = this.game.add.filter('BlurX');
         blurY = this.game.add.filter('BlurY');
-       
-        /*
-        //Rain Emitter
-        emitter = this.game.add.emitter(this.game.world.centerX, 0, 576);
-        emitter.angle = 30; // uncomment to set an angle for the rain.
-        
-        emitter.makeParticles('rain');
-        emitter.minParticleScale = 0.1;
-        emitter.maxParticleScale = 0.5;
-        emitter.setYSpeed(500, 550);
-        emitter.setXSpeed(-5, 5);
-        emitter.minRotation = 0;
-        emitter.maxRotation = 0;
-        emitter.start(false, 1600, 5, -1);
- 
-        emitter.makeParticles('rain2');
-        emitter.minParticleScale = 0.1;
-        emitter.maxParticleScale = 0.5;
-        emitter.setYSpeed(500, 550);
-        emitter.setXSpeed(-5, 5);
-        emitter.minRotation = 0;
-        emitter.maxRotation = 0;
-        emitter.start(false, 1600, 5, 0);
-        */
-
-
-        //Wasted - FadeIn
-        textWasted.alpha = 0;
-        fadeIn = this.game.add.tween(textWasted).to({alpha: 1}, 2000, Phaser.Easing.Linear.None, false);
 
         //Fearbar
         fearBar = this.game.add.sprite(16, 55, 'fearBar');
         fearBar.fixedToCamera = true;
-        fearBar.aplha = 1;
+        fearBar.alpha = 1;
         fearBar.width = 190;
-        this.timeToLive = 300000;
-
-
+        fearBar_border = this.game.add.sprite(16, 55, 'fearBar_border');
+        fearBar_border.fixedToCamera = true;
+        fearBar_border.width = 190;
+        this.timeToLive = timeToLive;
         fearTween = this.game.add.tween(fearBar).to({width:0}, this.timeToLive, Phaser.Easing.Linear.None, false);
         fearAlphaTween = this.game.add.tween(fearBar).to( { alpha: 0 }, 500, Phaser.Easing.Linear.None, false, 0, 1000, true);
 
-    },
+        //Pause Image
+        pauseImg = this.game.add.image(0, 0, 'logo_pause');
+        pauseImg.fixedToCamera = true;
+        pauseImg.alpha = 0;
 
-    pause: function() {
-
-
-            this.game.paused = true;
-            pauseText = this.game.add.text(250, 288, 'Game paused', { fontSize: '100px', fill: '#FF0000' });
-
-
-        if(!this.game.paused){
-            esc.onDown.add(this.pause, this);
-            pauseText.destroy();
-            this.game.paused = false;
-        }
-
-    },
-
-    unPause: function() {
-
-
-        if(!this.game.paused){
-
-            pauseText.destroy();
-            this.game.paused = false;
-        }
+        //Loading Image
+        loadingImg = this.game.add.image(0, 0, 'logo_loading');
+        loadingImg.fixedToCamera = true;
+        loadingImg.alpha = 0;
 
     },
 
     update: function() {
-        
+        console.log(currentLevel);
         if(!soundtrack.isDecoding) { //Wenn Soundtrack FERTIG mit decodieren ist, dann...
-            textWaiting.text = ' ';
+            loadingImg.alpha = 0;
+            if(!isPaused) { //Pause, wenn else
 
-            this.game.physics.arcade.collide(player, layer);
-            this.game.physics.arcade.collide(this.enemy1, layer);
-            this.game.physics.arcade.collide(this.enemy2, layer);
-            this.game.physics.arcade.collide(this.enemy3, layer);
-            this.game.physics.arcade.collide(this.enemy4, layer);
-            this.game.physics.arcade.collide(this.enemy5, layer);
-            this.game.physics.arcade.collide(this.enemy6, layer);
-            this.game.physics.arcade.collide(this.eneme7, layer);
-            this.game.physics.arcade.collide(this.enemy8, layer);
-            this.game.physics.arcade.collide(this.enemy9, layer);
-            this.game.physics.arcade.collide(this.enemy10, layer);
-            this.game.physics.arcade.collide(this.enemy11, layer);
-            this.game.physics.arcade.collide(this.enemy12, layer);
-            this.game.physics.arcade.collide(this.enemy13, layer);
-            this.game.physics.arcade.collide(this.enemy14, layer);
-            this.game.physics.arcade.collide(this.enemy15, layer);
-            this.game.physics.arcade.collide(this.enemy16, layer);
-            this.game.physics.arcade.collide(this.enemy17, layer);
-            this.game.physics.arcade.collide(this.enemy18, layer);
+                fearTween.start();
+                isPaused = false;
+                pauseImg.alpha = 0;
 
-            this.game.physics.arcade.overlap(player, this.enemy1, this.touchEnemy1, null, this);
-            this.game.physics.arcade.overlap(player, this.enemy2, this.touchEnemy2, null, this);
-            this.game.physics.arcade.overlap(player, this.enemy3, this.touchEnemy3, null, this);
-            this.game.physics.arcade.overlap(player, this.enemy4, this.touchEnemy4, null, this);
-            this.game.physics.arcade.overlap(player, this.enemy5, this.touchEnemy5, null, this);
-            this.game.physics.arcade.overlap(player, this.enemy6, this.touchEnemy6, null, this);
-            this.game.physics.arcade.overlap(player, this.eneme7, this.touchEnemy7, null, this);
-            this.game.physics.arcade.overlap(player, this.enemy8, this.touchEnemy8, null, this);
-            this.game.physics.arcade.overlap(player, this.enemy9, this.touchEnemy9, null, this);
-            this.game.physics.arcade.overlap(player, this.enemy10, this.touchEnemy10, null, this);
-            this.game.physics.arcade.overlap(player, this.enemy11, this.touchEnemy11, null, this);
-            this.game.physics.arcade.overlap(player, this.enemy12, this.touchEnemy12, null, this);
-            this.game.physics.arcade.overlap(player, this.enemy13, this.touchEnemy13, null, this);
-            this.game.physics.arcade.overlap(player, this.enemy14, this.touchEnemy14, null, this);
-            this.game.physics.arcade.overlap(player, this.enemy15, this.touchEnemy15, null, this);
-            this.game.physics.arcade.overlap(player, this.enemy16, this.touchEnemy16, null, this);
-            this.game.physics.arcade.overlap(player, this.enemy17, this.touchEnemy17, null, this);
-            this.game.physics.arcade.overlap(player, this.enemy18, this.touchEnemy18, null, this);
-            this.game.physics.arcade.overlap(player, this.star, this.nextStage, null, this);
-            this.game.physics.arcade.overlap(player, this.pills, this.collectPill, null, this);
+                esc.onDown.add(this.pauseMenu, this);
 
-            //Player movement
-            player.body.velocity.x = 0;
-            if (cursors.left.isDown) {
-                player.body.velocity.x = -230;
-                player.animations.play('left');
-            } else if (cursors.right.isDown) {
-                player.body.velocity.x = 230;
-                player.animations.play('right');
-            } else {
-                player.animations.stop();
-                player.frame = 8;
-            }
-            if (space.isDown && player.body.blocked.down){ //
-                player.body.velocity.y = -600;
-            }
+                this.game.physics.arcade.collide(player, layer);
+                this.game.physics.arcade.collide(this.enemy1, layer);
+                this.game.physics.arcade.collide(this.enemy2, layer);
+                this.game.physics.arcade.collide(this.enemy3, layer);
+                this.game.physics.arcade.collide(this.enemy4, layer);
+                this.game.physics.arcade.collide(this.enemy5, layer);
+                this.game.physics.arcade.collide(this.enemy6, layer);
+                this.game.physics.arcade.collide(this.eneme7, layer);
+                this.game.physics.arcade.collide(this.enemy8, layer);
+                this.game.physics.arcade.collide(this.enemy9, layer);
+                this.game.physics.arcade.collide(this.enemy10, layer);
+                this.game.physics.arcade.collide(this.enemy11, layer);
+                this.game.physics.arcade.collide(this.enemy12, layer);
+                this.game.physics.arcade.collide(this.enemy13, layer);
+                this.game.physics.arcade.collide(this.enemy14, layer);
+                this.game.physics.arcade.collide(this.enemy15, layer);
+                this.game.physics.arcade.collide(this.enemy16, layer);
+                this.game.physics.arcade.collide(this.enemy17, layer);
+                this.game.physics.arcade.collide(this.enemy18, layer);
 
-             //Enemy1 movement
-             if(this.enemy1.nachlinks) {
-                this.enemy1.animations.play('left');
-                this.enemy1.body.velocity.x = -70;
-            } else {
-                this.enemy1.animations.play('right');
-                this.enemy1.body.velocity.x = +70;
+                this.game.physics.arcade.overlap(player, this.enemy1, this.touchEnemy1, null, this);
+                this.game.physics.arcade.overlap(player, this.enemy2, this.touchEnemy2, null, this);
+                this.game.physics.arcade.overlap(player, this.enemy3, this.touchEnemy3, null, this);
+                this.game.physics.arcade.overlap(player, this.enemy4, this.touchEnemy4, null, this);
+                this.game.physics.arcade.overlap(player, this.enemy5, this.touchEnemy5, null, this);
+                this.game.physics.arcade.overlap(player, this.enemy6, this.touchEnemy6, null, this);
+                this.game.physics.arcade.overlap(player, this.eneme7, this.touchEnemy7, null, this);
+                this.game.physics.arcade.overlap(player, this.enemy8, this.touchEnemy8, null, this);
+                this.game.physics.arcade.overlap(player, this.enemy9, this.touchEnemy9, null, this);
+                this.game.physics.arcade.overlap(player, this.enemy10, this.touchEnemy10, null, this);
+                this.game.physics.arcade.overlap(player, this.enemy11, this.touchEnemy11, null, this);
+                this.game.physics.arcade.overlap(player, this.enemy12, this.touchEnemy12, null, this);
+                this.game.physics.arcade.overlap(player, this.enemy13, this.touchEnemy13, null, this);
+                this.game.physics.arcade.overlap(player, this.enemy14, this.touchEnemy14, null, this);
+                this.game.physics.arcade.overlap(player, this.enemy15, this.touchEnemy15, null, this);
+                this.game.physics.arcade.overlap(player, this.enemy16, this.touchEnemy16, null, this);
+                this.game.physics.arcade.overlap(player, this.enemy17, this.touchEnemy17, null, this);
+                this.game.physics.arcade.overlap(player, this.enemy18, this.touchEnemy18, null, this);
+                this.game.physics.arcade.overlap(player, this.star, this.nextStage, null, this);
+                this.game.physics.arcade.overlap(player, this.pills, this.collectPill, null, this);
+
+                //Player movement
+                player.body.velocity.x = 0;
+                if (cursors.left.isDown) {
+                    player.body.velocity.x = -230;
+                    player.animations.play('left');
+                } else if (cursors.right.isDown) {
+                    player.body.velocity.x = 230;
+                    player.animations.play('right');
+                } else {
+                    player.animations.stop();
+                    player.frame = 8;
+                }
+                if (space.isDown && player.body.blocked.down){ //
+                    player.body.velocity.y = -600;
+                }
+
+                 //Enemy1 movement
+                 if(this.enemy1.animationFix) {
+                    this.enemy1.animations.play('left');
+                    this.enemy1.body.velocity.x = -70;
+                } else {
+                    this.enemy1.animations.play('right');
+                    this.enemy1.body.velocity.x = +70;
+                }
+                if(this.enemy1.body.blocked.left) {
+                    this.enemy1.animationFix = false;
+                } else if(this.enemy1.body.blocked.right){
+                    this.enemy1.animationFix = true; 
+                }
+                //Enemy1 movement END
+                //Enemy2 movement
+                 if(this.enemy2.animationFix) {
+                    this.enemy2.animations.play('left');
+                    this.enemy2.body.velocity.x = -100;
+                } else {
+                    this.enemy2.animations.play('right');
+                    this.enemy2.body.velocity.x = 100;
+                }
+                if(this.enemy2.body.blocked.left) {
+                    this.enemy2.animationFix = false;
+                } else if(this.enemy2.body.blocked.right){
+                    this.enemy2.animationFix = true; 
+                }
+                //Enemy2 movement END
+                //Enemy3 movement
+                 if(this.enemy3.animationFix) {
+                    this.enemy3.animations.play('left');
+                    this.enemy3.body.velocity.x = -100;
+                } else {
+                    this.enemy3.animations.play('right');
+                    this.enemy3.body.velocity.x = 100;
+                }
+                if(this.enemy3.body.blocked.left) {
+                    this.enemy3.animationFix = false;
+                } else if(this.enemy3.body.blocked.right){
+                    this.enemy3.animationFix = true; 
+                }
+                //Enemy3 movement END
+                //Enemy4 movement
+                 if(this.enemy4.animationFix) {
+                    this.enemy4.animations.play('left');
+                    this.enemy4.body.velocity.x = -100;
+                } else {
+                    this.enemy4.animations.play('right');
+                    this.enemy4.body.velocity.x = 100;
+                }
+                if(this.enemy4.body.blocked.left) {
+                    this.enemy4.animationFix = false;
+                } else if(this.enemy4.body.blocked.right){
+                    this.enemy4.animationFix = true; 
+                }
+                //Enemy4 movement END
+                //Enemy5 movement
+                 if(this.enemy5.animationFix) {
+                    this.enemy5.animations.play('left');
+                    this.enemy5.body.velocity.x = -100;
+                } else {
+                    this.enemy5.animations.play('right');
+                    this.enemy5.body.velocity.x = 100;
+                }
+                if(this.enemy5.body.blocked.left) {
+                    this.enemy5.animationFix = false;
+                } else if(this.enemy5.body.blocked.right){
+                    this.enemy5.animationFix = true; 
+                }
+                //Enemy5 movement END
+                //Enemy6 movement
+                 if(this.enemy6.animationFix) {
+                    this.enemy6.animations.play('left');
+                    this.enemy6.body.velocity.x = -100;
+                } else {
+                    this.enemy6.animations.play('right');
+                    this.enemy6.body.velocity.x = 100;
+                }
+                if(this.enemy6.body.blocked.left) {
+                    this.enemy6.animationFix = false;
+                } else if(this.enemy6.body.blocked.right){
+                    this.enemy6.animationFix = true; 
+                }
+                //Enemy6 movement END
+                //Enemy7 movement
+                 if(this.enemy7.animationFix) {
+                    this.enemy7.animations.play('left');
+                    this.enemy7.body.velocity.x = -100;
+                } else {
+                    this.enemy7.animations.play('right');
+                    this.enemy7.body.velocity.x = 100;
+                }
+                if(this.enemy7.body.blocked.left) {
+                    this.enemy7.animationFix = false;
+                } else if(this.enemy7.body.blocked.right){
+                    this.enemy7.animationFix = true; 
+                }
+                //Enemy7 movement END
+                //Enemy8 movement
+                 if(this.enemy8.animationFix) {
+                    this.enemy8.animations.play('left');
+                    this.enemy8.body.velocity.x = -100;
+                } else {
+                    this.enemy8.animations.play('right');
+                    this.enemy8.body.velocity.x = 100;
+                }
+                if(this.enemy8.body.blocked.left) {
+                    this.enemy8.animationFix = false;
+                } else if(this.enemy8.body.blocked.right){
+                    this.enemy8.animationFix = true; 
+                }
+                //Enemy8 movement END
+                //Enemy9 movement
+                 if(this.enemy9.animationFix) {
+                    this.enemy9.animations.play('left');
+                    this.enemy9.body.velocity.x = -100;
+                } else {
+                    this.enemy9.animations.play('right');
+                    this.enemy9.body.velocity.x = 100;
+                }
+                if(this.enemy9.body.blocked.left) {
+                    this.enemy9.animationFix = false;
+                } else if(this.enemy9.body.blocked.right){
+                    this.enemy9.animationFix = true; 
+                }
+                //Enemy9 movement END
+                //Enemy10 movement
+                 if(this.enemy10.animationFix) {
+                    this.enemy10.animations.play('left');
+                    this.enemy10.body.velocity.x = -100;
+                } else {
+                    this.enemy10.animations.play('right');
+                    this.enemy10.body.velocity.x = 100;
+                }
+                if(this.enemy10.body.blocked.left) {
+                    this.enemy10.animationFix = false;
+                } else if(this.enemy10.body.blocked.right){
+                    this.enemy10.animationFix = true; 
+                }
+                //Enemy10 movement END
+                //Enemy11 movement
+                 if(this.enemy11.animationFix) {
+                    this.enemy11.animations.play('left');
+                    this.enemy11.body.velocity.x = -100;
+                } else {
+                    this.enemy11.animations.play('right');
+                    this.enemy11.body.velocity.x = 100;
+                }
+                if(this.enemy11.body.blocked.left) {
+                    this.enemy11.animationFix = false;
+                } else if(this.enemy11.body.blocked.right){
+                    this.enemy11.animationFix = true; 
+                }
+                //Enemy11 movement END
+                //Enemy12 movement
+                 if(this.enemy12.animationFix) {
+                    this.enemy12.animations.play('left');
+                    this.enemy12.body.velocity.x = -100;
+                } else {
+                    this.enemy12.animations.play('right');
+                    this.enemy12.body.velocity.x = 100;
+                }
+                if(this.enemy12.body.blocked.left) {
+                    this.enemy12.animationFix = false;
+                } else if(this.enemy12.body.blocked.right){
+                    this.enemy12.animationFix = true; 
+                }
+                //Enemy12 movement END
+                //Enemy13 movement
+                 if(this.enemy13.animationFix) {
+                    this.enemy13.animations.play('left');
+                    this.enemy13.body.velocity.x = -100;
+                } else {
+                    this.enemy13.animations.play('right');
+                    this.enemy13.body.velocity.x = 100;
+                }
+                if(this.enemy13.body.blocked.left) {
+                    this.enemy13.animationFix = false;
+                } else if(this.enemy13.body.blocked.right){
+                    this.enemy13.animationFix = true; 
+                }
+                //Enemy13 movement END
+                //Enemy14 movement
+                 if(this.enemy14.animationFix) {
+                    this.enemy14.animations.play('left');
+                    this.enemy14.body.velocity.x = -100;
+                } else {
+                    this.enemy14.animations.play('right');
+                    this.enemy14.body.velocity.x = 100;
+                }
+                if(this.enemy14.body.blocked.left) {
+                    this.enemy14.animationFix = false;
+                } else if(this.enemy14.body.blocked.right){
+                    this.enemy14.animationFix = true; 
+                }
+                //Enemy14 movement END
+                //Enemy15 movement
+                 if(this.enemy15.animationFix) {
+                    this.enemy15.animations.play('left');
+                    this.enemy15.body.velocity.x = -100;
+                } else {
+                    this.enemy15.animations.play('right');
+                    this.enemy15.body.velocity.x = 100;
+                }
+                if(this.enemy15.body.blocked.left) {
+                    this.enemy15.animationFix = false;
+                } else if(this.enemy15.body.blocked.right){
+                    this.enemy15.animationFix = true; 
+                }
+                //Enemy15 movement END
+                //Enemy16 movement
+                 if(this.enemy16.animationFix) {
+                    this.enemy16.animations.play('left');
+                    this.enemy16.body.velocity.x = -100;
+                } else {
+                    this.enemy16.animations.play('right');
+                    this.enemy16.body.velocity.x = 100;
+                }
+                if(this.enemy16.body.blocked.left) {
+                    this.enemy16.animationFix = false;
+                } else if(this.enemy16.body.blocked.right){
+                    this.enemy16.animationFix = true; 
+                }
+                //Enemy16 movement END
+                //Enemy17 movement
+                 if(this.enemy17.animationFix) {
+                    this.enemy17.animations.play('left');
+                    this.enemy17.body.velocity.x = -100;
+                } else {
+                    this.enemy17.animations.play('right');
+                    this.enemy17.body.velocity.x = 100;
+                }
+                if(this.enemy17.body.blocked.left) {
+                    this.enemy17.animationFix = false;
+                } else if(this.enemy17.body.blocked.right){
+                    this.enemy17.animationFix = true; 
+                }
+                //Enemy17 movement END
+                //Enemy18 movement
+                 if(this.enemy18.animationFix) {
+                    this.enemy18.animations.play('left');
+                    this.enemy18.body.velocity.x = -100;
+                } else {
+                    this.enemy18.animations.play('right');
+                    this.enemy18.body.velocity.x = 100;
+                }
+                if(this.enemy18.body.blocked.left) {
+                    this.enemy18.animationFix = false;
+                } else if(this.enemy18.body.blocked.right){
+                    this.enemy18.animationFix = true; 
+                }
+                //Enemy18 movement END
+
+            } else { //AB HIER PAUSE
+
+                fearTween.pause();
+                isPaused = true;
+                pauseImg.alpha = 1;
+
+                this.game.physics.arcade.collide(player, layer);
+                this.game.physics.arcade.collide(this.enemy1, layer);
+                this.game.physics.arcade.collide(this.enemy2, layer);
+                this.game.physics.arcade.collide(this.enemy3, layer);
+                this.game.physics.arcade.collide(this.enemy4, layer);
+                this.game.physics.arcade.collide(this.enemy5, layer);
+                this.game.physics.arcade.collide(this.enemy6, layer);
+                this.game.physics.arcade.collide(this.eneme7, layer);
+                this.game.physics.arcade.collide(this.enemy8, layer);
+                this.game.physics.arcade.collide(this.enemy9, layer);
+                this.game.physics.arcade.collide(this.enemy10, layer);
+                this.game.physics.arcade.collide(this.enemy11, layer);
+                this.game.physics.arcade.collide(this.enemy12, layer);
+                this.game.physics.arcade.collide(this.enemy13, layer);
+                this.game.physics.arcade.collide(this.enemy14, layer);
+                this.game.physics.arcade.collide(this.enemy15, layer);
+                this.game.physics.arcade.collide(this.enemy16, layer);
+                this.game.physics.arcade.collide(this.enemy17, layer);
+                this.game.physics.arcade.collide(this.enemy18, layer);
+
+                this.enemy1.body.velocity.x = 0;
+                this.enemy2.body.velocity.x = 0;
+                this.enemy3.body.velocity.x = 0;
+                this.enemy4.body.velocity.x = 0;
+                this.enemy5.body.velocity.x = 0;
+                this.enemy6.body.velocity.x = 0;
+                this.enemy7.body.velocity.x = 0;
+                this.enemy8.body.velocity.x = 0;
+                this.enemy9.body.velocity.x = 0;
+                this.enemy10.body.velocity.x = 0;
+                this.enemy11.body.velocity.x = 0;
+                this.enemy12.body.velocity.x = 0;
+                this.enemy13.body.velocity.x = 0;
+                this.enemy14.body.velocity.x = 0;
+                this.enemy15.body.velocity.x = 0;
+                this.enemy16.body.velocity.x = 0;
+                this.enemy17.body.velocity.x = 0;
+                this.enemy18.body.velocity.x = 0;
+
+                if(cursors.right.isDown || cursors.left.isDown || cursors.up.isDown || cursors.down.isDown) {
+                    fearTween.resume();
+                    isPaused = false;
+                }
+
             }
-            if(this.enemy1.body.blocked.left) {
-                this.enemy1.nachlinks = false;
-            } else if(this.enemy1.body.blocked.right){
-                this.enemy1.nachlinks = true; 
-            }
-            //Enemy1 movement END
-            //Enemy2 movement
-             if(this.enemy2.nachlinks) {
-                this.enemy2.animations.play('left');
-                this.enemy2.body.velocity.x = -100;
-            } else {
-                this.enemy2.animations.play('right');
-                this.enemy2.body.velocity.x = 100;
-            }
-            if(this.enemy2.body.blocked.left) {
-                this.enemy2.nachlinks = false;
-            } else if(this.enemy2.body.blocked.right){
-                this.enemy2.nachlinks = true; 
-            }
-            //Enemy2 movement END
-            //Enemy3 movement
-             if(this.enemy3.nachlinks) {
-                this.enemy3.animations.play('left');
-                this.enemy3.body.velocity.x = -100;
-            } else {
-                this.enemy3.animations.play('right');
-                this.enemy3.body.velocity.x = 100;
-            }
-            if(this.enemy3.body.blocked.left) {
-                this.enemy3.nachlinks = false;
-            } else if(this.enemy3.body.blocked.right){
-                this.enemy3.nachlinks = true; 
-            }
-            //Enemy3 movement END
-            //Enemy4 movement
-             if(this.enemy4.nachlinks) {
-                this.enemy4.animations.play('left');
-                this.enemy4.body.velocity.x = -100;
-            } else {
-                this.enemy4.animations.play('right');
-                this.enemy4.body.velocity.x = 100;
-            }
-            if(this.enemy4.body.blocked.left) {
-                this.enemy4.nachlinks = false;
-            } else if(this.enemy4.body.blocked.right){
-                this.enemy4.nachlinks = true; 
-            }
-            //Enemy4 movement END
-            //Enemy5 movement
-             if(this.enemy5.nachlinks) {
-                this.enemy5.animations.play('left');
-                this.enemy5.body.velocity.x = -100;
-            } else {
-                this.enemy5.animations.play('right');
-                this.enemy5.body.velocity.x = 100;
-            }
-            if(this.enemy5.body.blocked.left) {
-                this.enemy5.nachlinks = false;
-            } else if(this.enemy5.body.blocked.right){
-                this.enemy5.nachlinks = true; 
-            }
-            //Enemy5 movement END
-            //Enemy6 movement
-             if(this.enemy6.nachlinks) {
-                this.enemy6.animations.play('left');
-                this.enemy6.body.velocity.x = -100;
-            } else {
-                this.enemy6.animations.play('right');
-                this.enemy6.body.velocity.x = 100;
-            }
-            if(this.enemy6.body.blocked.left) {
-                this.enemy6.nachlinks = false;
-            } else if(this.enemy6.body.blocked.right){
-                this.enemy6.nachlinks = true; 
-            }
-            //Enemy6 movement END
-            //Enemy7 movement
-             if(this.enemy7.nachlinks) {
-                this.enemy7.animations.play('left');
-                this.enemy7.body.velocity.x = -100;
-            } else {
-                this.enemy7.animations.play('right');
-                this.enemy7.body.velocity.x = 100;
-            }
-            if(this.enemy7.body.blocked.left) {
-                this.enemy7.nachlinks = false;
-            } else if(this.enemy7.body.blocked.right){
-                this.enemy7.nachlinks = true; 
-            }
-            //Enemy7 movement END
-            //Enemy8 movement
-             if(this.enemy8.nachlinks) {
-                this.enemy8.animations.play('left');
-                this.enemy8.body.velocity.x = -100;
-            } else {
-                this.enemy8.animations.play('right');
-                this.enemy8.body.velocity.x = 100;
-            }
-            if(this.enemy8.body.blocked.left) {
-                this.enemy8.nachlinks = false;
-            } else if(this.enemy8.body.blocked.right){
-                this.enemy8.nachlinks = true; 
-            }
-            //Enemy8 movement END
-            //Enemy9 movement
-             if(this.enemy9.nachlinks) {
-                this.enemy9.animations.play('left');
-                this.enemy9.body.velocity.x = -100;
-            } else {
-                this.enemy9.animations.play('right');
-                this.enemy9.body.velocity.x = 100;
-            }
-            if(this.enemy9.body.blocked.left) {
-                this.enemy9.nachlinks = false;
-            } else if(this.enemy9.body.blocked.right){
-                this.enemy9.nachlinks = true; 
-            }
-            //Enemy9 movement END
-            //Enemy10 movement
-             if(this.enemy10.nachlinks) {
-                this.enemy10.animations.play('left');
-                this.enemy10.body.velocity.x = -100;
-            } else {
-                this.enemy10.animations.play('right');
-                this.enemy10.body.velocity.x = 100;
-            }
-            if(this.enemy10.body.blocked.left) {
-                this.enemy10.nachlinks = false;
-            } else if(this.enemy10.body.blocked.right){
-                this.enemy10.nachlinks = true; 
-            }
-            //Enemy10 movement END
-            //Enemy11 movement
-             if(this.enemy11.nachlinks) {
-                this.enemy11.animations.play('left');
-                this.enemy11.body.velocity.x = -100;
-            } else {
-                this.enemy11.animations.play('right');
-                this.enemy11.body.velocity.x = 100;
-            }
-            if(this.enemy11.body.blocked.left) {
-                this.enemy11.nachlinks = false;
-            } else if(this.enemy11.body.blocked.right){
-                this.enemy11.nachlinks = true; 
-            }
-            //Enemy11 movement END
-            //Enemy12 movement
-             if(this.enemy12.nachlinks) {
-                this.enemy12.animations.play('left');
-                this.enemy12.body.velocity.x = -100;
-            } else {
-                this.enemy12.animations.play('right');
-                this.enemy12.body.velocity.x = 100;
-            }
-            if(this.enemy12.body.blocked.left) {
-                this.enemy12.nachlinks = false;
-            } else if(this.enemy12.body.blocked.right){
-                this.enemy12.nachlinks = true; 
-            }
-            //Enemy12 movement END
-            //Enemy13 movement
-             if(this.enemy13.nachlinks) {
-                this.enemy13.animations.play('left');
-                this.enemy13.body.velocity.x = -100;
-            } else {
-                this.enemy13.animations.play('right');
-                this.enemy13.body.velocity.x = 100;
-            }
-            if(this.enemy13.body.blocked.left) {
-                this.enemy13.nachlinks = false;
-            } else if(this.enemy13.body.blocked.right){
-                this.enemy13.nachlinks = true; 
-            }
-            //Enemy13 movement END
-            //Enemy14 movement
-             if(this.enemy14.nachlinks) {
-                this.enemy14.animations.play('left');
-                this.enemy14.body.velocity.x = -100;
-            } else {
-                this.enemy14.animations.play('right');
-                this.enemy14.body.velocity.x = 100;
-            }
-            if(this.enemy14.body.blocked.left) {
-                this.enemy14.nachlinks = false;
-            } else if(this.enemy14.body.blocked.right){
-                this.enemy14.nachlinks = true; 
-            }
-            //Enemy14 movement END
-            //Enemy15 movement
-             if(this.enemy15.nachlinks) {
-                this.enemy15.animations.play('left');
-                this.enemy15.body.velocity.x = -100;
-            } else {
-                this.enemy15.animations.play('right');
-                this.enemy15.body.velocity.x = 100;
-            }
-            if(this.enemy15.body.blocked.left) {
-                this.enemy15.nachlinks = false;
-            } else if(this.enemy15.body.blocked.right){
-                this.enemy15.nachlinks = true; 
-            }
-            //Enemy15 movement END
-            //Enemy16 movement
-             if(this.enemy16.nachlinks) {
-                this.enemy16.animations.play('left');
-                this.enemy16.body.velocity.x = -100;
-            } else {
-                this.enemy16.animations.play('right');
-                this.enemy16.body.velocity.x = 100;
-            }
-            if(this.enemy16.body.blocked.left) {
-                this.enemy16.nachlinks = false;
-            } else if(this.enemy16.body.blocked.right){
-                this.enemy16.nachlinks = true; 
-            }
-            //Enemy16 movement END
-            //Enemy17 movement
-             if(this.enemy17.nachlinks) {
-                this.enemy17.animations.play('left');
-                this.enemy17.body.velocity.x = -100;
-            } else {
-                this.enemy17.animations.play('right');
-                this.enemy17.body.velocity.x = 100;
-            }
-            if(this.enemy17.body.blocked.left) {
-                this.enemy17.nachlinks = false;
-            } else if(this.enemy17.body.blocked.right){
-                this.enemy17.nachlinks = true; 
-            }
-            //Enemy17 movement END
-            //Enemy18 movement
-             if(this.enemy18.nachlinks) {
-                this.enemy18.animations.play('left');
-                this.enemy18.body.velocity.x = -100;
-            } else {
-                this.enemy18.animations.play('right');
-                this.enemy18.body.velocity.x = 100;
-            }
-            if(this.enemy18.body.blocked.left) {
-                this.enemy18.nachlinks = false;
-            } else if(this.enemy18.body.blocked.right){
-                this.enemy18.nachlinks = true; 
-            }
-            //Enemy18 movement END
 
 
         } else {
-            textWaiting.text = 'GAME IS LOADING';
+            //textWaiting.text = 'GAME IS LOADING';
+            loadingImg.alpha = 1;
             player.reset(50, this.game.world.height - 100);
             this.enemy1.reset(400,700);
             this.enemy2.reset(930, 650);
@@ -767,12 +785,12 @@ level2.prototype = {
        if(fearBar.width == 0) {
             player.alive = false;
             player.kill();
-            fadeIn.start();
-            layer2.filters = [blurX, blurY];
-            layer3.filters = [blurX, blurY];
-            layer4.filters = [blurX, blurY];
-            layer5.filters = [blurX, blurY];
-            this.enemy1.filters = [blurX, blurY];
+            //fadeIn.start();
+            //layer2.filters = [blurX, blurY];
+            //layer3.filters = [blurX, blurY];
+            //layer4.filters = [blurX, blurY];
+            //layer5.filters = [blurX, blurY];
+            //this.enemy1.filters = [blurX, blurY];
             this.game.state.start("GameOver_time");
         }
 
@@ -788,7 +806,7 @@ level2.prototype = {
             fearAlphaTween.start();
         }
 
-        fearTween.start();
+        
     },
 
     collectPill: function(player, pill) {
@@ -854,15 +872,19 @@ level2.prototype = {
     },
 
     nextStage: function(player, stars) {
-        this.game.state.start('Level3');
+        this.game.state.start(nextLevel);
     },
 
     render: function() {
         this.game.debug.bodyInfo(player, 275, 32);
+    },
 
-        if (soundtrack.isDecoding)
-        {
-            this.game.debug.text("Decoding Backgroundsound ...", 32, 200);
-        }
+    pauseMenu: function() {
+        isPaused = true;
+    },
+
+    unPauseMenu: function() {
+        isPaused = false;
     }
+  
 }

@@ -12,11 +12,14 @@ preload.prototype = {
 
         //Player and Enemys (Characters) preloading
         this.game.load.spritesheet('dude', 'assets/images/player.png', 32, 48);
-        this.game.load.spritesheet('enemy1', 'assets/images/enemy1.png', 32, 48);
-        this.game.load.spritesheet('enemy2', 'assets/images/enemy2.png', 32, 48);
+        this.game.load.spritesheet('enemy1', 'assets/images/opponent_dude.png', 32, 48);
+        this.game.load.spritesheet('enemy2', 'assets/images/opponent_bat.png', 48, 48);
 
         //Background preloadig
-        this.game.load.image('background', 'assets/images/background.jpg');
+        this.game.load.image('background1', 'assets/images/background1.jpg');
+        this.game.load.image('background2', 'assets/images/background2.jpg');
+        this.game.load.image('background3', 'assets/images/background3.jpg');
+        this.game.load.image('background4', 'assets/images/background4.jpg');
 
         //Star preloadig
         this.game.load.image('star', 'assets/images/star.png');
@@ -28,17 +31,20 @@ preload.prototype = {
         //Standardimages preloading
         this.game.load.image('pill', 'assets/images/pill.png');
 
-        //Fearbar
+        //Fearbar and Status
         this.game.load.spritesheet('fearBar', 'assets/images/fearbar.png');
+        this.game.load.spritesheet('fearBar_border', 'assets/images/fearbar_border.png');
+        this.game.load.spritesheet('feartimer', 'assets/images/feartimer.png');
+        this.game.load.spritesheet('good_luck', 'assets/images/good_luck.png');
    		
         //Menu
         this.game.load.image('logo', 'assets/images/silent_dust_logo.jpg');
         this.game.load.image('logo_gameover_fall', 'assets/images/silent_dust_gameover_fall.jpg');
         this.game.load.image('logo_gameover_time', 'assets/images/silent_dust_gameover_time.jpg');
+        this.game.load.image('logo_pause', 'assets/images/silent_dust_pause.jpg');
+        this.game.load.image('logo_loading', 'assets/images/silent_dust_loading.jpg');
         this.game.load.image('logo_instruction', 'assets/images/silent_dust_instruction.jpg');
         this.game.load.image('buttonimg', 'assets/images/buttonimg.png');
-        //this.game.load.spritesheet('logo', 'assets/images/silent_dust_logo.gif');
-        //this.game.load.image('back', 'assets/images/back.png');
 
         //Emitter
         this.game.load.spritesheet('rain', 'assets/images/rain.png', 17, 17);
@@ -53,11 +59,13 @@ preload.prototype = {
         this.game.load.audio('wasted', 'assets/sound/wasted.wav'); 
 
         //Levelend
-        this.game.load.image('star', 'assets/images/star.png');  
+        this.game.load.image('star', 'assets/images/star.png');
 
-        //Global Variables
+        //
         var currentLevel = 0;
+
 	},
+
   	create: function(){
 		this.game.state.start("Menu");
 	}
