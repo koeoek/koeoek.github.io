@@ -45,6 +45,15 @@ preload.prototype = {
         this.game.load.image('logo_loading', 'assets/images/silent_dust_loading.jpg');
         this.game.load.image('logo_instruction', 'assets/images/silent_dust_instruction.jpg');
         this.game.load.image('buttonimg', 'assets/images/buttonimg.png');
+        this.game.load.image('logo_level', 'assets/images/silent_dust_level.jpg');
+        this.game.load.image('level1', 'assets/images/level1.png');
+        this.game.load.image('level1_sw', 'assets/images/level1_sw.png');
+        this.game.load.image('level2', 'assets/images/level2.png');
+        this.game.load.image('level2_sw', 'assets/images/level2_sw.png');
+        this.game.load.image('level3', 'assets/images/level3.png');
+        this.game.load.image('level3_sw', 'assets/images/level3_sw.png');
+        this.game.load.image('level4', 'assets/images/level4.png');
+        this.game.load.image('level4_sw', 'assets/images/level4_sw.png');
 
         //Emitter
         this.game.load.spritesheet('rain', 'assets/images/rain.png', 17, 17);
@@ -57,12 +66,17 @@ preload.prototype = {
         this.game.load.audio('soundtrack', 'assets/sound/soundtrack.wav');
         this.game.load.audio('steps', 'assets/sound/steps.wav');
         this.game.load.audio('wasted', 'assets/sound/wasted.wav'); 
+        this.game.load.audio('zombie', 'assets/sound/zombie.wav'); 
 
         //Levelend
         this.game.load.image('star', 'assets/images/star.png');
 
-        //
-        var currentLevel = 0;
+        //Globale Einstellungen
+        currentLevel = 0;
+        level1Finished = true;
+        level2Finished = false;
+        level3Finished = false;
+        level4Finished = false;
 
 	},
 

@@ -53,7 +53,7 @@ level2.prototype = {
         //LEVELSETTINGS
         var intLevelNumber = 2;
         var intEnemys = 18;
-        var timeToLive = 50000;
+        var timeToLive = 20000;
         nextLevel = 'Level3';
 
         //DO NOT CHANGE!
@@ -75,8 +75,8 @@ level2.prototype = {
         bg.scrollFactorX = 10;
 
         //Music
-        soundtrack = this.game.sound.play('soundtrack');
-        //soundtrack.mute;
+        soundtrack = this.game.sound.play('soundtrack'); //Wird bereits im Menü geladen
+
 
         //Add text
         goodluck = this.game.add.image(16, 100+370, 'good_luck');
@@ -92,7 +92,9 @@ level2.prototype = {
         //Keys
         cursors = this.game.input.keyboard.createCursorKeys();
         esc = this.input.keyboard.addKey(Phaser.Keyboard.ESC);
+        enter = this.input.keyboard.addKey(Phaser.Keyboard.ENTER);
         space = this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+        qKey = this.game.input.keyboard.addKey(Phaser.Keyboard.Q);
 
         //Tilesets and Mapping
         console.log(mapName);
@@ -399,12 +401,12 @@ level2.prototype = {
     },
 
     update: function() {
-        console.log(currentLevel);
+        soundtrack.mute = true;
         if(!soundtrack.isDecoding) { //Wenn Soundtrack FERTIG mit decodieren ist, dann...
             loadingImg.alpha = 0;
             if(!isPaused) { //Pause, wenn else
 
-                fearTween.start();
+                
                 isPaused = false;
                 pauseImg.alpha = 0;
 
@@ -765,14 +767,18 @@ level2.prototype = {
                 this.enemy17.body.velocity.x = 0;
                 this.enemy18.body.velocity.x = 0;
 
-                if(cursors.right.isDown || cursors.left.isDown || cursors.up.isDown || cursors.down.isDown) {
+                if(enter.isDown) {
                     fearTween.resume();
                     isPaused = false;
                 }
 
+                if(qKey.isDown) {
+                    this.game.state.start("Menu");
+                }
+
             }
 
-
+        fearTween.start();
         } else {
             //textWaiting.text = 'GAME IS LOADING';
             loadingImg.alpha = 1;
@@ -799,6 +805,7 @@ level2.prototype = {
             this.game.state.start("GameOver_fall");
         }
 
+
         if(this.game.time.now - this.timeCheck > 5000) {
             fearTween.resume();
         }
@@ -817,6 +824,7 @@ level2.prototype = {
 
     touchEnemy1: function(player, enemy1) {
         fearTween.update(10000);
+        zombie = this.game.sound.play('zombie', 1, 0, true, true);
     },
 
     touchEnemy2: function(player, enemy2) {
@@ -872,7 +880,8 @@ level2.prototype = {
     },
 
     nextStage: function(player, stars) {
-        this.game.state.start(nextLevel);
+        level3Finished = true;
+        this.game.state.start('Level');
     },
 
     render: function() {
@@ -881,10 +890,12 @@ level2.prototype = {
 
     pauseMenu: function() {
         isPaused = true;
+        fearTween.pause();
     },
 
     unPauseMenu: function() {
         isPaused = false;
+        fearTween.resume();
     }
   
 }

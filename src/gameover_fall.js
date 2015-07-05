@@ -2,6 +2,8 @@ var gameOverFall = function(game){}
 
 gameOverFall.prototype = {
   	create: function(){
+  		wasted = this.game.sound.play('wasted');
+
 		this.game.add.image(0, 0, 'logo_gameover_fall');
   		play = this.game.add.button(420, 275, "buttonimg", this.playTheGame, this);
   		this.game.add.button(420, 350, "buttonimg", this.showInstructions, this);

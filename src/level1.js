@@ -1,39 +1,39 @@
 var level1 = function(game){
 
 
-	//Items
-	var pills;
-	var pill;
+    //Items
+    var pills;
+    var pill;
 
-	//Effekte
-	var blurX;
-	var blurY;
+    //Effekte
+    var blurX;
+    var blurY;
 
-	//Fearbar
-	var tweenUpdate; //Übergangsparamenter, wenn Dingens getouched wird
+    //Fearbar
+    var tweenUpdate; //Übergangsparamenter, wenn Dingens getouched wird
 
-	//Text
-	var textGoodLuck;
-	var textWasted;
-	var textFear;
+    //Text
+    var textGoodLuck;
+    var textWasted;
+    var textFear;
 
-	//Sound
-	var soundtrack;
+    //Sound
+    var soundtrack;
 
-	//Charakter
-	var enemyV;
+    //Charakter
+    var enemyV;
     var enemyBlockedLeft = true;
     var enemy;
     var enemys;
 
-	//Core
-	var fearBar, fearTween, fearAlphaTween;
-	var timeCheck;
-	var fadeIn;
+    //Core
+    var fearBar, fearTween, fearAlphaTween;
+    var timeCheck;
+    var fadeIn;
 
-	//Keys
-	var esc;
-	var space;
+    //Keys
+    var esc;
+    var space;
 
     //Pause
     isPaused = false;
@@ -48,12 +48,12 @@ var level1 = function(game){
 
 level1.prototype = {
 
-	create: function() {
+    create: function() {
 
         //LEVELSETTINGS
         var intLevelNumber = 1;
         var intEnemys = 18;
-        var timeToLive = 50000;
+        var timeToLive = 25000;
         nextLevel = 'Level2';
 
         //DO NOT CHANGE!
@@ -75,8 +75,8 @@ level1.prototype = {
         bg.scrollFactorX = 10;
 
         //Music
-        soundtrack = this.game.sound.play('soundtrack');
-        //soundtrack.mute;
+        soundtrack = this.game.sound.play('soundtrack'); //Wird bereits im Menü geladen
+
 
         //Add text
         goodluck = this.game.add.image(16, 100+370, 'good_luck');
@@ -88,11 +88,13 @@ level1.prototype = {
 
         //Initialize physics
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
-		
+        
         //Keys
         cursors = this.game.input.keyboard.createCursorKeys();
         esc = this.input.keyboard.addKey(Phaser.Keyboard.ESC);
-		space = this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+        enter = this.input.keyboard.addKey(Phaser.Keyboard.ENTER);
+        space = this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+        qKey = this.game.input.keyboard.addKey(Phaser.Keyboard.Q);
 
         //Tilesets and Mapping
         console.log(mapName);
@@ -217,7 +219,7 @@ level1.prototype = {
         this.game.physics.arcade.enable(this.enemy18);
         this.game.physics.arcade.enable(stars);
 
-		//Physicsattributes for player
+        //Physicsattributes for player
         player.body.bounce.y = 0;
         player.body.gravity.y = 1500;
         player.body.collideWorldBounds = false;
@@ -399,18 +401,18 @@ level1.prototype = {
     },
 
     update: function() {
-        console.log(currentLevel);
-    	if(!soundtrack.isDecoding) { //Wenn Soundtrack FERTIG mit decodieren ist, dann...
+        soundtrack.mute = true;
+        if(!soundtrack.isDecoding) { //Wenn Soundtrack FERTIG mit decodieren ist, dann...
             loadingImg.alpha = 0;
             if(!isPaused) { //Pause, wenn else
 
-                fearTween.start();
+                
                 isPaused = false;
                 pauseImg.alpha = 0;
 
                 esc.onDown.add(this.pauseMenu, this);
 
-    	        this.game.physics.arcade.collide(player, layer);
+                this.game.physics.arcade.collide(player, layer);
                 this.game.physics.arcade.collide(this.enemy1, layer);
                 this.game.physics.arcade.collide(this.enemy2, layer);
                 this.game.physics.arcade.collide(this.enemy3, layer);
@@ -451,8 +453,8 @@ level1.prototype = {
                 this.game.physics.arcade.overlap(player, this.star, this.nextStage, null, this);
                 this.game.physics.arcade.overlap(player, this.pills, this.collectPill, null, this);
 
-    	        //Player movement
-    	        player.body.velocity.x = 0;
+                //Player movement
+                player.body.velocity.x = 0;
                 if (cursors.left.isDown) {
                     player.body.velocity.x = -230;
                     player.animations.play('left');
@@ -467,7 +469,7 @@ level1.prototype = {
                     player.body.velocity.y = -600;
                 }
 
-    	         //Enemy1 movement
+                 //Enemy1 movement
                  if(this.enemy1.animationFix) {
                     this.enemy1.animations.play('left');
                     this.enemy1.body.velocity.x = -70;
@@ -765,19 +767,23 @@ level1.prototype = {
                 this.enemy17.body.velocity.x = 0;
                 this.enemy18.body.velocity.x = 0;
 
-                if(cursors.right.isDown || cursors.left.isDown || cursors.up.isDown || cursors.down.isDown) {
+                if(enter.isDown) {
                     fearTween.resume();
                     isPaused = false;
                 }
 
+                if(qKey.isDown) {
+                    this.game.state.start("Menu");
+                }
+
             }
 
-
- 		} else {
-	        //textWaiting.text = 'GAME IS LOADING';
+        fearTween.start();
+        } else {
+            //textWaiting.text = 'GAME IS LOADING';
             loadingImg.alpha = 1;
-	        player.reset(50, this.game.world.height - 100);
-	        this.enemy1.reset(400,700);
+            player.reset(50, this.game.world.height - 100);
+            this.enemy1.reset(400,700);
             this.enemy2.reset(930, 650);
             this.enemy3.reset(1420, 725);
        }
@@ -799,6 +805,7 @@ level1.prototype = {
             this.game.state.start("GameOver_fall");
         }
 
+
         if(this.game.time.now - this.timeCheck > 5000) {
             fearTween.resume();
         }
@@ -817,6 +824,7 @@ level1.prototype = {
 
     touchEnemy1: function(player, enemy1) {
         fearTween.update(10000);
+        zombie = this.game.sound.play('zombie', 1, 0, true, true);
     },
 
     touchEnemy2: function(player, enemy2) {
@@ -872,7 +880,8 @@ level1.prototype = {
     },
 
     nextStage: function(player, stars) {
-        this.game.state.start(nextLevel);
+        level2Finished = true;
+        this.game.state.start('Level');
     },
 
     render: function() {
@@ -881,10 +890,12 @@ level1.prototype = {
 
     pauseMenu: function() {
         isPaused = true;
+        fearTween.pause();
     },
 
     unPauseMenu: function() {
         isPaused = false;
+        fearTween.resume();
     }
   
 }
