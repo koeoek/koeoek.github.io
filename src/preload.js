@@ -14,6 +14,8 @@ preload.prototype = {
         this.game.load.spritesheet('dude', 'assets/images/player.png', 32, 48);
         this.game.load.spritesheet('enemy1', 'assets/images/opponent_dude.png', 32, 48);
         this.game.load.spritesheet('enemy2', 'assets/images/opponent_bat.png', 48, 48);
+        this.game.load.spritesheet('enemy3', 'assets/images/opponent_skeleton.png', 22,48);
+        this.game.load.spritesheet('enemy4', 'assets/images/opponent_wolf.png', 50, 47);
 
         //Background preloadig
         this.game.load.image('background1', 'assets/images/background1.jpg');
@@ -66,7 +68,13 @@ preload.prototype = {
         this.game.load.audio('soundtrack', 'assets/sound/soundtrack.wav');
         this.game.load.audio('steps', 'assets/sound/steps.wav');
         this.game.load.audio('wasted', 'assets/sound/wasted.wav'); 
-        this.game.load.audio('zombie', 'assets/sound/zombie.wav'); 
+        this.game.load.audio('zombie', 'assets/sound/zombie.wav');
+        this.game.load.audio('click', 'assets/sound/click.wav');
+        this.game.load.audio('pauseSound', 'assets/sound/pauseSound.wav'); 
+        this.game.load.audio('swallow', 'assets/sound/swallow.wav');
+        this.game.load.audio('bat', 'assets/sound/bats.wav');
+        this.game.load.audio('skeletonSound', 'assets/sound/skeletonSound.wav');
+
 
         //Levelend
         this.game.load.image('star', 'assets/images/star.png');
@@ -81,6 +89,18 @@ preload.prototype = {
 	},
 
   	create: function(){
-		this.game.state.start("Menu");
-	}
+        //Start the Soundtrack
+        background_sound = this.game.sound.play('soundtrack');
+        loadingImg = this.game.add.image(0, 0, 'logo_loading');
+
+	},
+
+    update: function() {
+        if(background_sound.isDecoding) {
+            loadingImg.alpha = 1;
+        } else {
+            loadingImg.alpha = 0;
+            this.game.state.start("Menu");
+        }
+    }
 }

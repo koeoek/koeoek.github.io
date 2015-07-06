@@ -40,22 +40,27 @@ level.prototype = {
   },
 
   showMenu: function(){
+    click = this.game.sound.play('click');
     this.game.state.start('Menu');
   },
 
   startLevel1: function(){
+    click = this.game.sound.play('click');
     this.game.state.start('Level1');
   },
 
   startLevel2: function(){
+    click = this.game.sound.play('click');
     this.game.state.start('Level2');
   },
 
   startLevel3: function(){
+    click = this.game.sound.play('click');
     this.game.state.start('Level3');
   },
 
   startLevel4: function(){
+    click = this.game.sound.play('click');
     this.game.state.start('Level4');
   },
 

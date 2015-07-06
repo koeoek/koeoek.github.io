@@ -8,6 +8,7 @@ instructions.prototype = {
 		this.game.add.button(850, 20, "buttonimg", this.showMenu, this);
 	},
 	showMenu: function(){
+		click = this.game.sound.play('click');
 		this.game.state.start("Menu");
 	},
 }

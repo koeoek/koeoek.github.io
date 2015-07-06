@@ -53,7 +53,7 @@ level2.prototype = {
         //LEVELSETTINGS
         var intLevelNumber = 2;
         var intEnemys = 18;
-        var timeToLive = 20000;
+        var timeToLive = 30000;
         nextLevel = 'Level3';
 
         //DO NOT CHANGE!
@@ -75,8 +75,8 @@ level2.prototype = {
         bg.scrollFactorX = 10;
 
         //Music
-        soundtrack = this.game.sound.play('soundtrack'); //Wird bereits im Menü geladen
-
+        soundtrack = this.game.sound.play('soundtrack'); //Wird bereits in Level 1 geladen
+        soundtrack.mute;
 
         //Add text
         goodluck = this.game.add.image(16, 100+370, 'good_luck');
@@ -155,12 +155,11 @@ level2.prototype = {
         //Groups
         this.pills = this.game.add.group();
         this.pills.enableBody = true;
-        this.pills.create(1025, 592, 'pill');
-        this.pills.create(1756, 848, 'pill');
-        this.pills.create(2625, 528, 'pill');
-        this.pills.create(3991, 880, 'pill');
-        this.pills.create(4836, 880, 'pill');
-        this.pills.create(5728, 880, 'pill');
+        this.pills.create(1007, 656, 'pill');
+        this.pills.create(2363, 592, 'pill');
+        this.pills.create(3328, 880, 'pill');
+        this.pills.create(4031, 848, 'pill');
+        this.pills.create(5227, 880, 'pill');
 
         stars = this.game.add.group();
         stars.enableBody = true;
@@ -172,7 +171,7 @@ level2.prototype = {
 
         //Create Player and Enemys
         player = this.game.add.sprite(320000, this.game.world.height - 1500, 'dude');
-        this.enemy1 = this.game.add.sprite(40000, 70000, 'enemy1'); //Das Anfangsmännchen
+        this.enemy1 = this.game.add.sprite(40000, 70000, 'enemy3'); //Das Anfangsmännchen
         this.enemy2 = this.game.add.sprite(120000, 68000, 'enemy2'); //Fledermaus
         this.enemy3 = this.game.add.sprite(1420, 725, 'enemy2'); //Fledermaus
         this.enemy4 = this.game.add.sprite(2263, 560, 'enemy2'); //Fledermaus
@@ -184,18 +183,19 @@ level2.prototype = {
         this.enemy10 = this.game.add.sprite(5343, 720, 'enemy2'); //Fledermaus
         this.enemy11 = this.game.add.sprite(6132, 720, 'enemy2'); //Fledermaus
 
-        this.enemy12 = this.game.add.sprite(2257, 880, 'enemy1'); //Das Anfangsmännchen
-        this.enemy13 = this.game.add.sprite(3484, 880, 'enemy1'); //Das Anfangsmännchen
-        this.enemy14 = this.game.add.sprite(3687, 880, 'enemy1'); //Das Anfangsmännchen
-        this.enemy15 = this.game.add.sprite(3889, 880, 'enemy1'); //Das Anfangsmännchen
-        this.enemy16 = this.game.add.sprite(4096, 880, 'enemy1'); //Das Anfangsmännchen
-        this.enemy17 = this.game.add.sprite(4587, 880, 'enemy1'); //Das Anfangsmännchen
-        this.enemy18 = this.game.add.sprite(5987, 880, 'enemy1'); //Das Anfangsmännchen
+        this.enemy12 = this.game.add.sprite(467, 880, 'enemy3'); //Das Anfangsmännchen
+        this.enemy13 = this.game.add.sprite(1312, 880, 'enemy3'); //Das Anfangsmännchen
+        this.enemy14 = this.game.add.sprite(1569, 880, 'enemy3'); //Das Anfangsmännchen
+        this.enemy15 = this.game.add.sprite(1795, 880, 'enemy3'); //Das Anfangsmännchen
+        this.enemy16 = this.game.add.sprite(2500, 880, 'enemy3'); //Das Anfangsmännchen
+        this.enemy17 = this.game.add.sprite(5790, 880, 'enemy3'); //Das Anfangsmännchen
+        this.enemy18 = this.game.add.sprite(5892, 880, 'enemy3'); //Das Anfangsmännchen
+        
 
         //Player- and enemy-Air-fix
         player.reset(50, this.game.world.height - 100);//Reset, weil sie direkz zu sehen sind
-        this.enemy1.reset(400,700);
-        this.enemy2.reset(930, 650);
+        this.enemy1.reset(306,880);
+        this.enemy2.reset(306, 500);
 
         //Set Arcade to player and enemys
         this.game.physics.arcade.enable(player);
@@ -432,7 +432,7 @@ level2.prototype = {
                 this.game.physics.arcade.collide(this.enemy17, layer);
                 this.game.physics.arcade.collide(this.enemy18, layer);
 
-                this.game.physics.arcade.overlap(player, this.enemy1, this.touchEnemy1, null, this);
+                this.game.physics.arcade.overlap(player, this.enemy1, this.touchEnemy1, null, this); //FL
                 this.game.physics.arcade.overlap(player, this.enemy2, this.touchEnemy2, null, this);
                 this.game.physics.arcade.overlap(player, this.enemy3, this.touchEnemy3, null, this);
                 this.game.physics.arcade.overlap(player, this.enemy4, this.touchEnemy4, null, this);
@@ -443,13 +443,13 @@ level2.prototype = {
                 this.game.physics.arcade.overlap(player, this.enemy9, this.touchEnemy9, null, this);
                 this.game.physics.arcade.overlap(player, this.enemy10, this.touchEnemy10, null, this);
                 this.game.physics.arcade.overlap(player, this.enemy11, this.touchEnemy11, null, this);
-                this.game.physics.arcade.overlap(player, this.enemy12, this.touchEnemy12, null, this);
-                this.game.physics.arcade.overlap(player, this.enemy13, this.touchEnemy13, null, this);
-                this.game.physics.arcade.overlap(player, this.enemy14, this.touchEnemy14, null, this);
-                this.game.physics.arcade.overlap(player, this.enemy15, this.touchEnemy15, null, this);
-                this.game.physics.arcade.overlap(player, this.enemy16, this.touchEnemy16, null, this);
-                this.game.physics.arcade.overlap(player, this.enemy17, this.touchEnemy17, null, this);
-                this.game.physics.arcade.overlap(player, this.enemy18, this.touchEnemy18, null, this);
+                this.game.physics.arcade.overlap(player, this.enemy12, this.touchEnemy12, null, this); //FL
+                this.game.physics.arcade.overlap(player, this.enemy13, this.touchEnemy13, null, this); //FL
+                this.game.physics.arcade.overlap(player, this.enemy14, this.touchEnemy14, null, this); //FL
+                this.game.physics.arcade.overlap(player, this.enemy15, this.touchEnemy15, null, this); //FL
+                this.game.physics.arcade.overlap(player, this.enemy16, this.touchEnemy16, null, this); //FL
+                this.game.physics.arcade.overlap(player, this.enemy17, this.touchEnemy17, null, this); //FL
+                this.game.physics.arcade.overlap(player, this.enemy18, this.touchEnemy18, null, this); //FL
                 this.game.physics.arcade.overlap(player, this.star, this.nextStage, null, this);
                 this.game.physics.arcade.overlap(player, this.pills, this.collectPill, null, this);
 
@@ -722,11 +722,11 @@ level2.prototype = {
                 }
                 //Enemy18 movement END
 
-            } else { //AB HIER PAUSE
-
+            } else { //AB HIER Pause
                 fearTween.pause();
                 isPaused = true;
                 pauseImg.alpha = 1;
+                soundtrack.volume = -5;
 
                 this.game.physics.arcade.collide(player, layer);
                 this.game.physics.arcade.collide(this.enemy1, layer);
@@ -768,11 +768,13 @@ level2.prototype = {
                 this.enemy18.body.velocity.x = 0;
 
                 if(enter.isDown) {
+                    click = this.game.sound.play('click');
                     fearTween.resume();
                     isPaused = false;
                 }
 
                 if(qKey.isDown) {
+                    click = this.game.sound.play('click');
                     this.game.state.start("Menu");
                 }
 
@@ -817,66 +819,89 @@ level2.prototype = {
     },
 
     collectPill: function(player, pill) {
+        swallow = this.game.sound.play('swallow');
         fearTween.pause();
         pill.kill();
         this.timeCheck = this.game.time.now;
+
     },
 
-    touchEnemy1: function(player, enemy1) {
-        fearTween.update(10000);
-        zombie = this.game.sound.play('zombie', 1, 0, true, true);
-    },
-
+    //FLEDERMÄUSE
     touchEnemy2: function(player, enemy2) {
         fearTween.update(10000);
+        bat = this.game.sound.play('bat');
     },
     touchEnemy3: function(player, enemy3) {
         fearTween.update(10000);
+        bat = this.game.sound.play('bat');
     },
-    touchEnemy3: function(player, enemy4) {
+    touchEnemy4: function(player, enemy4) {
         fearTween.update(10000);
+        bat = this.game.sound.play('bat');
     },
-    touchEnemy3: function(player, enemy5) {
+    touchEnemy5: function(player, enemy5) {
         fearTween.update(10000);
+        bat = this.game.sound.play('bat');
     },
-    touchEnemy3: function(player, enemy6) {
+    touchEnemy6: function(player, enemy6) {
         fearTween.update(10000);
+        bat = this.game.sound.play('bat');
     },
-    touchEnemy3: function(player, enemy7) {
+    touchEnemy7: function(player, enemy7) {
         fearTween.update(10000);
+        bat = this.game.sound.play('bat');
     },
-    touchEnemy3: function(player, enemy8) {
+    touchEnemy8: function(player, enemy8) {
         fearTween.update(10000);
+        bat = this.game.sound.play('bat');
     },
-    touchEnemy3: function(player, enemy9) {
+    touchEnemy9: function(player, enemy9) {
         fearTween.update(10000);
+        bat = this.game.sound.play('bat');
     },
-    touchEnemy3: function(player, enemy10) {
+    touchEnemy10: function(player, enemy10) {
         fearTween.update(10000);
+        bat = this.game.sound.play('bat');
     },
-    touchEnemy3: function(player, enemy11) {
+    touchEnemy11: function(player, enemy11) {
         fearTween.update(10000);
+        bat = this.game.sound.play('bat');
     },
-    touchEnemy3: function(player, enemy12) {
+
+
+    //MÄNNCHEN
+    touchEnemy1: function(player, enemy1) {
         fearTween.update(10000);
+        zombie = this.game.sound.play('skeletonSound');
     },
-    touchEnemy3: function(player, enemy13) {
+
+    touchEnemy12: function(player, enemy12) {
         fearTween.update(10000);
+        zombie = this.game.sound.play('skeletonSound');
     },
-    touchEnemy3: function(player, enemy14) {
+    touchEnemy13: function(player, enemy13) {
         fearTween.update(10000);
+        zombie = this.game.sound.play('skeletonSound');
     },
-    touchEnemy3: function(player, enemy15) {
+    touchEnemy14: function(player, enemy14) {
         fearTween.update(10000);
+        zombie = this.game.sound.play('skeletonSound');
     },
-    touchEnemy3: function(player, enemy16) {
+    touchEnemy15: function(player, enemy15) {
         fearTween.update(10000);
+        zombie = this.game.sound.play('skeletonSound');
     },
-    touchEnemy3: function(player, enemy17) {
+    touchEnemy16: function(player, enemy16) {
         fearTween.update(10000);
+        zombie = this.game.sound.play('skeletonSound');
     },
-    touchEnemy3: function(player, enemy18) {
+    touchEnemy17: function(player, enemy17) {
         fearTween.update(10000);
+        zombie = this.game.sound.play('skeletonSound');
+    },
+    touchEnemy18: function(player, enemy18) {
+        fearTween.update(10000);
+        zombie = this.game.sound.play('skeletonSound');
     },
 
     nextStage: function(player, stars) {
@@ -889,6 +914,7 @@ level2.prototype = {
     },
 
     pauseMenu: function() {
+        click = this.game.sound.play('click');
         isPaused = true;
         fearTween.pause();
     },

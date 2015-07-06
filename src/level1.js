@@ -53,7 +53,7 @@ level1.prototype = {
         //LEVELSETTINGS
         var intLevelNumber = 1;
         var intEnemys = 18;
-        var timeToLive = 25000;
+        var timeToLive = 30000;
         nextLevel = 'Level2';
 
         //DO NOT CHANGE!
@@ -76,6 +76,7 @@ level1.prototype = {
 
         //Music
         soundtrack = this.game.sound.play('soundtrack'); //Wird bereits im Menü geladen
+        soundtrack.mute;
 
 
         //Add text
@@ -172,7 +173,7 @@ level1.prototype = {
 
         //Create Player and Enemys
         player = this.game.add.sprite(320000, this.game.world.height - 1500, 'dude');
-        this.enemy1 = this.game.add.sprite(40000, 70000, 'enemy1'); //Das Anfangsmännchen
+        
         this.enemy2 = this.game.add.sprite(120000, 68000, 'enemy2'); //Fledermaus
         this.enemy3 = this.game.add.sprite(1420, 725, 'enemy2'); //Fledermaus
         this.enemy4 = this.game.add.sprite(2263, 560, 'enemy2'); //Fledermaus
@@ -184,6 +185,7 @@ level1.prototype = {
         this.enemy10 = this.game.add.sprite(5343, 720, 'enemy2'); //Fledermaus
         this.enemy11 = this.game.add.sprite(6132, 720, 'enemy2'); //Fledermaus
 
+        this.enemy1 = this.game.add.sprite(40000, 70000, 'enemy1'); //Das Anfangsmännchen
         this.enemy12 = this.game.add.sprite(2257, 880, 'enemy1'); //Das Anfangsmännchen
         this.enemy13 = this.game.add.sprite(3484, 880, 'enemy1'); //Das Anfangsmännchen
         this.enemy14 = this.game.add.sprite(3687, 880, 'enemy1'); //Das Anfangsmännchen
@@ -722,11 +724,11 @@ level1.prototype = {
                 }
                 //Enemy18 movement END
 
-            } else { //AB HIER PAUSE
-
+            } else { //AB HIER Pause
                 fearTween.pause();
                 isPaused = true;
                 pauseImg.alpha = 1;
+                //soundtrack.volume = 1000;
 
                 this.game.physics.arcade.collide(player, layer);
                 this.game.physics.arcade.collide(this.enemy1, layer);
@@ -768,11 +770,13 @@ level1.prototype = {
                 this.enemy18.body.velocity.x = 0;
 
                 if(enter.isDown) {
+                    click = this.game.sound.play('click');
                     fearTween.resume();
                     isPaused = false;
                 }
 
                 if(qKey.isDown) {
+                    click = this.game.sound.play('click');
                     this.game.state.start("Menu");
                 }
 
@@ -817,66 +821,89 @@ level1.prototype = {
     },
 
     collectPill: function(player, pill) {
+        swallow = this.game.sound.play('swallow');
         fearTween.pause();
         pill.kill();
         this.timeCheck = this.game.time.now;
+
     },
 
-    touchEnemy1: function(player, enemy1) {
-        fearTween.update(10000);
-        zombie = this.game.sound.play('zombie', 1, 0, true, true);
-    },
-
+    //FLEDERMÄUSE
     touchEnemy2: function(player, enemy2) {
         fearTween.update(10000);
+        bat = this.game.sound.play('bat');
     },
     touchEnemy3: function(player, enemy3) {
         fearTween.update(10000);
+        bat = this.game.sound.play('bat');
     },
-    touchEnemy3: function(player, enemy4) {
+    touchEnemy4: function(player, enemy4) {
         fearTween.update(10000);
+        bat = this.game.sound.play('bat');
     },
-    touchEnemy3: function(player, enemy5) {
+    touchEnemy5: function(player, enemy5) {
         fearTween.update(10000);
+        bat = this.game.sound.play('bat');
     },
-    touchEnemy3: function(player, enemy6) {
+    touchEnemy6: function(player, enemy6) {
         fearTween.update(10000);
+        bat = this.game.sound.play('bat');
     },
-    touchEnemy3: function(player, enemy7) {
+    touchEnemy7: function(player, enemy7) {
         fearTween.update(10000);
+        bat = this.game.sound.play('bat');
     },
-    touchEnemy3: function(player, enemy8) {
+    touchEnemy8: function(player, enemy8) {
         fearTween.update(10000);
+        bat = this.game.sound.play('bat');
     },
-    touchEnemy3: function(player, enemy9) {
+    touchEnemy9: function(player, enemy9) {
         fearTween.update(10000);
+        bat = this.game.sound.play('bat');
     },
-    touchEnemy3: function(player, enemy10) {
+    touchEnemy10: function(player, enemy10) {
         fearTween.update(10000);
+        bat = this.game.sound.play('bat');
     },
-    touchEnemy3: function(player, enemy11) {
+    touchEnemy11: function(player, enemy11) {
         fearTween.update(10000);
+        bat = this.game.sound.play('bat');
     },
-    touchEnemy3: function(player, enemy12) {
+
+
+    //MÄNNCHEN
+    touchEnemy1: function(player, enemy1) {
         fearTween.update(10000);
+        zombie = this.game.sound.play('zombie');
     },
-    touchEnemy3: function(player, enemy13) {
+
+    touchEnemy12: function(player, enemy12) {
         fearTween.update(10000);
+        zombie = this.game.sound.play('zombie');
     },
-    touchEnemy3: function(player, enemy14) {
+    touchEnemy13: function(player, enemy13) {
         fearTween.update(10000);
+        zombie = this.game.sound.play('zombie');
     },
-    touchEnemy3: function(player, enemy15) {
+    touchEnemy14: function(player, enemy14) {
         fearTween.update(10000);
+        zombie = this.game.sound.play('zombie');
     },
-    touchEnemy3: function(player, enemy16) {
+    touchEnemy15: function(player, enemy15) {
         fearTween.update(10000);
+        zombie = this.game.sound.play('zombie');
     },
-    touchEnemy3: function(player, enemy17) {
+    touchEnemy16: function(player, enemy16) {
         fearTween.update(10000);
+        zombie = this.game.sound.play('zombie');
     },
-    touchEnemy3: function(player, enemy18) {
+    touchEnemy17: function(player, enemy17) {
         fearTween.update(10000);
+        zombie = this.game.sound.play('zombie');
+    },
+    touchEnemy18: function(player, enemy18) {
+        fearTween.update(10000);
+        zombie = this.game.sound.play('zombie');
     },
 
     nextStage: function(player, stars) {
@@ -889,6 +916,7 @@ level1.prototype = {
     },
 
     pauseMenu: function() {
+        click = this.game.sound.play('click');
         isPaused = true;
         fearTween.pause();
     },
