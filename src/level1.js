@@ -77,6 +77,7 @@ level1.prototype = {
         //Music
         soundtrack = this.game.sound.play('soundtrack'); //Wird bereits im Menü geladen
         soundtrack.mute;
+        
 
 
         //Add text

@@ -57,6 +57,8 @@ preload.prototype = {
         this.game.load.image('level3_sw', 'assets/images/level3_sw.png');
         this.game.load.image('level4', 'assets/images/level4.png');
         this.game.load.image('level4_sw', 'assets/images/level4_sw.png');
+        this.game.load.image('logo_blur', 'assets/images/silent_dust_blur.jpg');
+        this.game.load.image('outro_text', 'assets/images/outro_text.png');
 
         //Emitter
         this.game.load.spritesheet('rain', 'assets/images/rain.png', 17, 17);
@@ -88,11 +90,14 @@ preload.prototype = {
         level3Finished = true;
         level4Finished = true;
 
+        background_sound = this.game.sound.play('soundtrack');
+        
+
+
 	},
 
   	create: function(){
         //Start the Soundtrack
-        background_sound = this.game.sound.play('soundtrack');
         loadingImg = this.game.add.image(0, 0, 'logo_loading');
 
 	},

@@ -13,6 +13,7 @@
 	<script src="src/level4.js"></script>
 	<script src="src/gameover_fall.js"></script>	
 	<script src="src/gameover_time.js"></script>
+	<script src="src/outro.js"></script>
 	<link rel="stylesheet" href="css/layout.css">	
 	<div id="phaser_game">
 		<script>
@@ -29,6 +30,7 @@
 				game.state.add("Level4",level4);
 				game.state.add("GameOver_fall",gameOverFall);
 				game.state.add("GameOver_time",gameOverTime);
+				game.state.add("Outro",outro);
 				game.state.start("Preload");
 			})();   
 		</script>

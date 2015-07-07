@@ -459,7 +459,7 @@ level4.prototype = {
                     player.body.velocity.x = -230;
                     player.animations.play('left');
                 } else if (cursors.right.isDown) {
-                    player.body.velocity.x = 230;
+                    player.body.velocity.x = 230+600;
                     player.animations.play('right');
                 } else {
                     player.animations.stop();
@@ -906,7 +906,9 @@ level4.prototype = {
 
     nextStage: function(player, stars) {
         level4Finished = true;
-        this.game.state.start('Level');
+        
+        this.game.sound.remove(background_sound);
+        this.game.state.start('Outro');
     },
 
     render: function() {
