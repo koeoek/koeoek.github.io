@@ -53,7 +53,7 @@ level4.prototype = {
         //LEVELSETTINGS
         var intLevelNumber = 4;
         var intEnemys = 18;
-        var timeToLive = 55000+99999999999999;
+        var timeToLive = 55000;
         nextLevel = 'Level5';
 
         //DO NOT CHANGE!
@@ -112,17 +112,25 @@ level4.prototype = {
         layer8.wrap = true;
         layer8.alpha = 0;
 
-            //Particles
-            var emitter = this.game.add.emitter(this.game.world.centerX, 0, 576);
+            //Particles (Rain)
+             var emitter = this.game.add.emitter(this.game.world.centerX, 0, 400);
+
             emitter.width = this.game.world.width;
-            emitter.makeParticles('leaf');
-            emitter.minParticleSpeed.setTo(-576, 30);
-            emitter.maxParticleSpeed.setTo(576, 200);
-            emitter.minParticleScale = 0.1;
-            emitter.maxParticleScale = 0.3;
-            emitter.gravity = 1;
-            emitter.flow(5000, 500, 5, -1);
-            emitter.flow(5000, 100, 1, -1);
+            emitter.angle = 30; // uncomment to set an angle for the rain.
+
+                emitter.makeParticles('rain');
+
+                emitter.minParticleScale = 0.1;
+                emitter.maxParticleScale = 0.5;
+
+                emitter.setYSpeed(1500, 1800);
+                emitter.setXSpeed(-15, 15);
+
+                emitter.minRotation = 0;
+                emitter.maxRotation = 0;
+
+                emitter.start(false, 1600, 5, 0);
+        emitter.maxParticles
 
         layer2 = map.createLayer('ground');
         layer2.resizeWorld();
@@ -459,13 +467,13 @@ level4.prototype = {
                     player.body.velocity.x = -230;
                     player.animations.play('left');
                 } else if (cursors.right.isDown) {
-                    player.body.velocity.x = 230+600;
+                    player.body.velocity.x = 230;
                     player.animations.play('right');
                 } else {
                     player.animations.stop();
                     player.frame = 8;
                 }
-                if (space.isDown){ // && player.body.blocked.down
+                if (space.isDown && player.body.blocked.down) { //
                     player.body.velocity.y = -600;
                 }
 
@@ -726,7 +734,6 @@ level4.prototype = {
                 fearTween.pause();
                 isPaused = true;
                 pauseImg.alpha = 1;
-                soundtrack.volume = -5;
 
                 this.game.physics.arcade.collide(player, layer);
                 this.game.physics.arcade.collide(this.enemy1, layer);
@@ -872,36 +879,36 @@ level4.prototype = {
     //MÄNNCHEN
     touchEnemy1: function(player, enemy1) {
         fearTween.update(10000);
-        zombie = this.game.sound.play('zombie');
+        zombie = this.game.sound.play('wolf');
     },
 
     touchEnemy12: function(player, enemy12) {
         fearTween.update(10000);
-        zombie = this.game.sound.play('zombie');
+        zombie = this.game.sound.play('wolf');
     },
     touchEnemy13: function(player, enemy13) {
         fearTween.update(10000);
-        zombie = this.game.sound.play('zombie');
+        zombie = this.game.sound.play('wolf');
     },
     touchEnemy14: function(player, enemy14) {
         fearTween.update(10000);
-        zombie = this.game.sound.play('zombie');
+        zombie = this.game.sound.play('wolf');
     },
     touchEnemy15: function(player, enemy15) {
         fearTween.update(10000);
-        zombie = this.game.sound.play('zombie');
+        zombie = this.game.sound.play('wolf');
     },
     touchEnemy16: function(player, enemy16) {
         fearTween.update(10000);
-        zombie = this.game.sound.play('zombie');
+        zombie = this.game.sound.play('wolf');
     },
     touchEnemy17: function(player, enemy17) {
         fearTween.update(10000);
-        zombie = this.game.sound.play('zombie');
+        zombie = this.game.sound.play('wolf');
     },
     touchEnemy18: function(player, enemy18) {
         fearTween.update(10000);
-        zombie = this.game.sound.play('zombie');
+        zombie = this.game.sound.play('wolf');
     },
 
     nextStage: function(player, stars) {

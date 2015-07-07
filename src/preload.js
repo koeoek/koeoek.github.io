@@ -77,6 +77,7 @@ preload.prototype = {
         swallow = this.game.load.audio('swallow', 'assets/sound/swallow.wav');
         bat = this.game.load.audio('bat', 'assets/sound/bats.wav');
         skeletonSound = this.game.load.audio('skeletonSound', 'assets/sound/skeletonSound.wav');
+        wolf = this.game.load.audio('wolf', 'assets/sound/wolf.wav');
         outro = this.game.load.audio('outro', 'assets/sound/outro.wav');
 
 
@@ -86,9 +87,9 @@ preload.prototype = {
         //Globale Einstellungen
         currentLevel = 0;
         level1Finished = true;
-        level2Finished = true;
-        level3Finished = true;
-        level4Finished = true;
+        level2Finished = false;
+        level3Finished = false;
+        level4Finished = false;
 
         background_sound = this.game.sound.play('soundtrack');
         

@@ -725,7 +725,6 @@ level3.prototype = {
                 fearTween.pause();
                 isPaused = true;
                 pauseImg.alpha = 1;
-                soundtrack.volume = -5;
 
                 this.game.physics.arcade.collide(player, layer);
                 this.game.physics.arcade.collide(this.enemy1, layer);
