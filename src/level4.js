@@ -53,7 +53,7 @@ level4.prototype = {
         //LEVELSETTINGS
         var intLevelNumber = 4;
         var intEnemys = 18;
-        var timeToLive = 55000;
+        var timeToLive = 55000+99999999999999;
         nextLevel = 'Level5';
 
         //DO NOT CHANGE!
@@ -71,7 +71,7 @@ level4.prototype = {
         isPaused = false;
 
         //Background
-        bg = this.game.add.image(0, 100, 'background4');
+        bg = this.game.add.image(0, 0, 'background4');
         bg.scrollFactorX = 10;
 
         //Music
@@ -172,7 +172,7 @@ level4.prototype = {
 
         //Create Player and Enemys
         player = this.game.add.sprite(320000, this.game.world.height - 1500, 'dude');
-        this.enemy1 = this.game.add.sprite(40000, 70000, 'enemy1'); //Das Anfangsmännchen
+        this.enemy1 = this.game.add.sprite(40000, 70000, 'enemy4'); //Das Anfangsmännchen
         this.enemy2 = this.game.add.sprite(120000, 68000, 'enemy2'); //Fledermaus
         this.enemy3 = this.game.add.sprite(1420, 725, 'enemy2'); //Fledermaus
         this.enemy4 = this.game.add.sprite(2263, 560, 'enemy2'); //Fledermaus
@@ -184,17 +184,17 @@ level4.prototype = {
         this.enemy10 = this.game.add.sprite(5343, 720, 'enemy2'); //Fledermaus
         this.enemy11 = this.game.add.sprite(6132, 720, 'enemy2'); //Fledermaus
 
-        this.enemy12 = this.game.add.sprite(2257, 880, 'enemy1'); //Das Anfangsmännchen
-        this.enemy13 = this.game.add.sprite(3484, 880, 'enemy1'); //Das Anfangsmännchen
-        this.enemy14 = this.game.add.sprite(3687, 880, 'enemy1'); //Das Anfangsmännchen
-        this.enemy15 = this.game.add.sprite(3889, 880, 'enemy1'); //Das Anfangsmännchen
-        this.enemy16 = this.game.add.sprite(4096, 880, 'enemy1'); //Das Anfangsmännchen
-        this.enemy17 = this.game.add.sprite(4587, 880, 'enemy1'); //Das Anfangsmännchen
-        this.enemy18 = this.game.add.sprite(5987, 880, 'enemy1'); //Das Anfangsmännchen
+        this.enemy12 = this.game.add.sprite(1909, 880, 'enemy4'); //Das Anfangsmännchen
+        this.enemy13 = this.game.add.sprite(2193, 880, 'enemy4'); //Das Anfangsmännchen
+        this.enemy14 = this.game.add.sprite(2487, 880, 'enemy4'); //Das Anfangsmännchen
+        this.enemy15 = this.game.add.sprite(3262, 880, 'enemy4'); //Das Anfangsmännchen
+        this.enemy16 = this.game.add.sprite(4762, 880, 'enemy4'); //Das Anfangsmännchen
+        this.enemy17 = this.game.add.sprite(4700, 880, 'enemy4'); //Das Anfangsmännchen
+        this.enemy18 = this.game.add.sprite(6036, 880, 'enemy4'); //Das Anfangsmännchen
 
         //Player- and enemy-Air-fix
         player.reset(50, this.game.world.height - 100);//Reset, weil sie direkz zu sehen sind
-        this.enemy1.reset(400,700);
+        this.enemy1.reset(300,880);
         this.enemy2.reset(930, 650);
 
         //Set Arcade to player and enemys
@@ -465,7 +465,7 @@ level4.prototype = {
                     player.animations.stop();
                     player.frame = 8;
                 }
-                if (space.isDown && player.body.blocked.down){ //
+                if (space.isDown){ // && player.body.blocked.down
                     player.body.velocity.y = -600;
                 }
 

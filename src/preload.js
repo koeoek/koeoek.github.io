@@ -33,6 +33,7 @@ preload.prototype = {
         //Standardimages preloading
         this.game.load.image('pill', 'assets/images/pill.png');
 
+
         //Fearbar and Status
         this.game.load.spritesheet('fearBar', 'assets/images/fearbar.png');
         this.game.load.spritesheet('fearBar_border', 'assets/images/fearbar_border.png');
@@ -65,15 +66,16 @@ preload.prototype = {
         this.game.load.image('pill', 'assets/images/pill.png');
 
         //Sounds
-        this.game.load.audio('soundtrack', 'assets/sound/soundtrack.wav');
-        this.game.load.audio('steps', 'assets/sound/steps.wav');
-        this.game.load.audio('wasted', 'assets/sound/wasted.wav'); 
-        this.game.load.audio('zombie', 'assets/sound/zombie.wav');
-        this.game.load.audio('click', 'assets/sound/click.wav');
-        this.game.load.audio('pauseSound', 'assets/sound/pauseSound.wav'); 
-        this.game.load.audio('swallow', 'assets/sound/swallow.wav');
-        this.game.load.audio('bat', 'assets/sound/bats.wav');
-        this.game.load.audio('skeletonSound', 'assets/sound/skeletonSound.wav');
+        soundtrack = this.game.load.audio('soundtrack', 'assets/sound/soundtrack.wav');
+        steps = this.game.load.audio('steps', 'assets/sound/steps.wav');
+        wasted = this.game.load.audio('wasted', 'assets/sound/wasted.wav'); 
+        zombie = this.game.load.audio('zombie', 'assets/sound/zombie.wav');
+        click = this.game.load.audio('click', 'assets/sound/click.wav');
+        pauseSound = this.game.load.audio('pauseSound', 'assets/sound/pauseSound.wav'); 
+        swallow = this.game.load.audio('swallow', 'assets/sound/swallow.wav');
+        bat = this.game.load.audio('bat', 'assets/sound/bats.wav');
+        skeletonSound = this.game.load.audio('skeletonSound', 'assets/sound/skeletonSound.wav');
+        outro = this.game.load.audio('outro', 'assets/sound/outro.wav');
 
 
         //Levelend
@@ -82,9 +84,9 @@ preload.prototype = {
         //Globale Einstellungen
         currentLevel = 0;
         level1Finished = true;
-        level2Finished = false;
-        level3Finished = false;
-        level4Finished = false;
+        level2Finished = true;
+        level3Finished = true;
+        level4Finished = true;
 
 	},
 

@@ -53,7 +53,7 @@ level3.prototype = {
         //LEVELSETTINGS
         var intLevelNumber = 3;
         var intEnemys = 18;
-        var timeToLive = 50000+9999999999;
+        var timeToLive = 50000;
         nextLevel = 'Level4';
 
         //DO NOT CHANGE!
@@ -71,7 +71,7 @@ level3.prototype = {
         isPaused = false;
 
         //Background
-        bg = this.game.add.image(0, 100, 'background3');
+        bg = this.game.add.image(0, 0, 'background3');
         bg.scrollFactorX = 10;
 
         //Music
