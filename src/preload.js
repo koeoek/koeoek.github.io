@@ -68,7 +68,7 @@ preload.prototype = {
         this.game.load.image('pill', 'assets/images/pill.png');
 
         //Sounds
-        soundtrack = this.game.load.audio('soundtrack', 'assets/sound/soundtrack.wav');
+        soundtrack = this.game.load.audio('soundtrack', 'assets/sound/soundtrack.mp3');
         steps = this.game.load.audio('steps', 'assets/sound/steps.wav');
         wasted = this.game.load.audio('wasted', 'assets/sound/wasted.wav'); 
         zombie = this.game.load.audio('zombie', 'assets/sound/zombie.wav');
@@ -78,7 +78,7 @@ preload.prototype = {
         bat = this.game.load.audio('bat', 'assets/sound/bats.wav');
         skeletonSound = this.game.load.audio('skeletonSound', 'assets/sound/skeletonSound.wav');
         wolf = this.game.load.audio('wolf', 'assets/sound/wolf.wav');
-        outro = this.game.load.audio('outro', 'assets/sound/outro.wav');
+        outro = this.game.load.audio('outro', 'assets/sound/outro.mp3');
 
 
         //Levelend

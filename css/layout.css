@@ -10,12 +10,6 @@ body {
 	margin-top: 25px;
 }
 
-#phaser_game {
-	margin-left: auto;
-	margin-right: auto;
-	display: block;
-}
-
 canvas {
    display : block;
    margin : auto;
