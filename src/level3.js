@@ -908,7 +908,7 @@ level3.prototype = {
     },
 
     render: function() {
-        this.game.debug.bodyInfo(player, 275, 32);
+        //this.game.debug.bodyInfo(player, 275, 32);
     },
 
     pauseMenu: function() {

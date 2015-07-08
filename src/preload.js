@@ -87,11 +87,12 @@ preload.prototype = {
         //Globale Einstellungen
         currentLevel = 0;
         level1Finished = true;
-        level2Finished = false;
-        level3Finished = false;
-        level4Finished = false;
+        level2Finished = true;
+        level3Finished = true;
+        level4Finished = true;
 
-        background_sound = this.game.sound.play('soundtrack');
+        background_sound = this.game.sound.play('soundtrack', 1, 1, true);
+        
         
 
 
